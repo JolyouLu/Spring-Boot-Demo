@@ -1,0 +1,37 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.jolyoulu.springboot_jsp_shiro.dao.UserDao">
+
+    <insert id="save" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (id, password, username, salt) VALUES (#{id},#{password},#{username},#{salt});
+    </insert>
+
+    <select id="findByUserName" parameterType="String" resultType="top.jolyoulu.springboot_jsp_shiro.entity.User">
+        SELECT id,username,password,salt FROM users WHERE username = #{username}
+    </select>
+
+    <resultMap id="userMap" type="User">
+        <id column="u_id" property="id"/>
+        <result column="username" property="username"/>
+        <collection property="roleList" javaType="list" ofType="Role">
+            <id column="r_id" property="id"/>
+            <result column="r_name" property="name"/>
+        </collection>
+    </resultMap>
+    <select id="findRolesByUserName" resultMap="userMap">
+        SELECT u.id AS u_id,u.username AS u_username,r.name AS r_name,r.id AS r_id
+        FROM users u
+                 LEFT JOIN users_roles ur ON u.id = ur.users_id
+                 LEFT JOIN roles r ON r.id = ur.id
+        WHERE u.username = #{username}
+    </select>
+
+    <select id="findPermsByRolesId" parameterType="String" resultType="top.jolyoulu.springboot_jsp_shiro.entity.Pers">
+        SELECT p.id AS id,p.name AS name
+        FROM roles r
+                 LEFT JOIN roles_pers rp ON r.id = rp.roles_id
+                 LEFT JOIN pers p ON rp.pers_id = p.id
+        WHERE r.id = #{roleId}
+          AND rp.id IS NOT NULL
+    </select>
+
+</mapper>
