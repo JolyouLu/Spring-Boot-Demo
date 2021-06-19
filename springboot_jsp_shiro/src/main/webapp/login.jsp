@@ -15,6 +15,7 @@
     <form action="${pageContext.request.contextPath}/user/login" method="post">
         用户名：<input type="text" name="username"><br>
         密码  ：<input type="test" name="password"><br>
+        请输入验证码：<input type="text" name="code"><img src="${pageContext.request.contextPath}/user/getImage"/><br>
         <input type="submit" value="登录">
     </form>
 </body>

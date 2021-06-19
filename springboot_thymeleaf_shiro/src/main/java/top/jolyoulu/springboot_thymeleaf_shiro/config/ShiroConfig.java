@@ -1,15 +1,14 @@
-package top.jolyoulu.springboot_jsp_shiro.config;
+package top.jolyoulu.springboot_thymeleaf_shiro.config;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
-import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import top.jolyoulu.springboot_jsp_shiro.shiro.cache.RedisCacheManager;
-import top.jolyoulu.springboot_jsp_shiro.shiro.realms.CustomerRealm;
+import top.jolyoulu.springboot_thymeleaf_shiro.shiro.realms.CustomerRealm;
+import top.jolyoulu.springboot_thymeleaf_shiro.shiro.cache.RedisCacheManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +22,11 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
+    @Bean("shiroDialect")
+    public ShiroDialect shiroDialect(){
+        return new ShiroDialect();
+    }
+
     //创建ShiroFilter
     @Bean("shiroFilterFactoryBean")
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(){
@@ -31,14 +35,16 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(this.getDefaultSecurityManager());
         //配置系统受限资源 与 公共资源
         Map<String,String> map = new HashMap<>();
+        map.put("/login.html","anon"); //anon 公共资源
+        map.put("/register.html","anon"); //anon 公共资源
+        map.put("/user/registerview","anon"); //anon 公共资源
         map.put("/user/getImage","anon"); //anon 公共资源
         map.put("/user/login","anon"); //anon 公共资源
         map.put("/user/register","anon"); //anon 公共资源
-        map.put("/register.jsp","anon"); //anon 公共资源
         map.put("/**","authc"); //authc 请求这个资源需要认证和授权
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         //配置认证界面的路径
-        shiroFilterFactoryBean.setLoginUrl("/login.jsp");
+        shiroFilterFactoryBean.setLoginUrl("/user/loginview");
         return shiroFilterFactoryBean;
     }
 

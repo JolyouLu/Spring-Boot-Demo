@@ -1,10 +1,9 @@
-package top.jolyoulu.springboot_jsp_shiro.shiro.salt;
+package top.jolyoulu.springboot_thymeleaf_shiro.shiro.salt;
 
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.codec.CodecSupport;
 import org.apache.shiro.codec.Hex;
 import org.apache.shiro.util.ByteSource;
-import org.apache.shiro.util.SimpleByteSource;
 
 import java.io.File;
 import java.io.InputStream;
@@ -44,11 +43,11 @@ public class MySimpleByteSource implements ByteSource, Serializable {
     }
 
     public MySimpleByteSource(File file) {
-        this.bytes = (new MySimpleByteSource.BytesHelper()).getBytes(file);
+        this.bytes = (new BytesHelper()).getBytes(file);
     }
 
     public MySimpleByteSource(InputStream stream) {
-        this.bytes = (new MySimpleByteSource.BytesHelper()).getBytes(stream);
+        this.bytes = (new BytesHelper()).getBytes(stream);
     }
 
     public static boolean isCompatible(Object o) {

@@ -1,10 +1,9 @@
-package top.jolyoulu.springboot_jsp_shiro.shiro.cache;
+package top.jolyoulu.springboot_thymeleaf_shiro.shiro.cache;
 
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
-import top.jolyoulu.springboot_jsp_shiro.utils.ApplicationContextUtils;
+import top.jolyoulu.springboot_thymeleaf_shiro.utils.ApplicationContextUtils;
 
 import java.util.Collection;
 import java.util.Set;

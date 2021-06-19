@@ -1,22 +1,19 @@
-package top.jolyoulu.springboot_jsp_shiro.controller;
+package top.jolyoulu.springboot_thymeleaf_shiro.controller;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import top.jolyoulu.springboot_jsp_shiro.entity.User;
-import top.jolyoulu.springboot_jsp_shiro.service.UserService;
-import top.jolyoulu.springboot_jsp_shiro.utils.VerifyCodeUtils;
+import top.jolyoulu.springboot_thymeleaf_shiro.entity.User;
+import top.jolyoulu.springboot_thymeleaf_shiro.service.UserService;
+import top.jolyoulu.springboot_thymeleaf_shiro.utils.VerifyCodeUtils;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -34,6 +31,49 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    /**
+     * 调整login页面
+     */
+    @RequestMapping("loginview")
+    public String loginview(){
+        return "login";
+    }
+    /**
+     * 调整register页面
+     */
+    @RequestMapping("registerview")
+    public String registerview(){
+        return "register";
+    }
+
+    /**
+     * 身份认证接口
+     */
+    @RequestMapping("login")
+    public String login(String username,String password,String code,HttpSession session){
+        //比较验证码
+        String codes = (String) session.getAttribute("code");
+        try {
+            if (!codes.equalsIgnoreCase(code)){
+                throw new RuntimeException("验证码错误!");
+            }
+            //获取主体对象
+            Subject subject = SecurityUtils.getSubject();
+            subject.login(new UsernamePasswordToken(username, password));
+            return "redirect:/index";
+        }catch (UnknownAccountException e){
+            e.printStackTrace();
+            System.out.println("用户名错误！");
+        }catch (IncorrectCredentialsException e){
+            e.printStackTrace();
+            System.out.println("密码错误！");
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            System.out.println("验证码错误！");
+        }
+        return "redirect:/user/loginview";
+    }
 
     /**
      * 获取验证码
@@ -56,9 +96,9 @@ public class UserController {
     public String register(User user){
         try {
             userService.register(user);
-            return "redirect:/login.jsp";
+            return "redirect:/user/loginview";
         }catch (Exception e){
-            return "redirect:/register.jsp";
+            return "redirect:/user/registerview";
         }
     }
 
@@ -66,35 +106,7 @@ public class UserController {
     public String logout(){
         Subject subject = SecurityUtils.getSubject();
         subject.logout(); //退出登录
-        return "redirect:/login.jsp";
-    }
-
-    /**
-     * 身份认证接口
-     */
-    @RequestMapping("login")
-    public String login(String username,String password,String code,HttpSession session){
-        //比较验证码
-        String codes = (String) session.getAttribute("code");
-        try {
-            if (!codes.equalsIgnoreCase(code)){
-                throw new RuntimeException("验证码错误!");
-            }
-            //获取主体对象
-            Subject subject = SecurityUtils.getSubject();
-            subject.login(new UsernamePasswordToken(username, password));
-            return "redirect:/index.jsp";
-        }catch (UnknownAccountException e){
-            e.printStackTrace();
-            System.out.println("用户名错误！");
-        }catch (IncorrectCredentialsException e){
-            e.printStackTrace();
-            System.out.println("密码错误！");
-        }catch (RuntimeException e){
-            e.printStackTrace();
-            System.out.println("验证码错误！");
-        }
-        return "redirect:/login.jsp";
+        return "redirect:/user/loginview";
     }
 
     @RequestMapping("add")
