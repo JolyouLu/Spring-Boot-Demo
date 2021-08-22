@@ -82,6 +82,7 @@ public class RedisTestController {
                               "return 0 " +
                             "end";
             DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
+            redisScript.setScriptText(script);
             redisScript.setResultType(Long.class);
             redisTemplate.execute(redisScript, Arrays.asList("lock"),uuid);
         }else {
