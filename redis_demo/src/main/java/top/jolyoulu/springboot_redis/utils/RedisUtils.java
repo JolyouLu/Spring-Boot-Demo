@@ -37,6 +37,7 @@ public class RedisUtils {
      * @param tag 锁标记，释放前与释放后需传入一致(防止被其它线程释放锁)
      */
     public void unLock(String lock, String tag){
+        //释放锁，使用lua脚本，原子性操作
         String script = "if redis.call('get', KEYS[1]) == ARGV[1] then " +
                 "return redis.call('del', KEYS[1]) " +
                 "else " +
