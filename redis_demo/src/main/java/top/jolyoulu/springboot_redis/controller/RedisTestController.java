@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import top.jolyoulu.springboot_redis.utils.RedisUtils;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +25,9 @@ public class RedisTestController {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private RedisUtils redisUtils;
 
     //分布式锁的实现方式1：set nx ex + uuid
     @GetMapping("/testLock1")
@@ -94,5 +99,32 @@ public class RedisTestController {
                 e.printStackTrace();
             }
         }
+    }
+
+    //预先加载秒杀库存
+    @PostConstruct
+    public void init(){
+        redisTemplate.opsForValue().set("product_123",100);
+    }
+
+    //秒杀实例
+    @PostMapping("/secKill")
+    @ResponseBody
+    public String secKill(String productId) throws InterruptedException {
+        //预扣库存
+        long sock = redisUtils.decr("product_" + productId);
+        if (sock < 0){
+            redisUtils.incr("product_" + productId);
+            return "商品已经售完";
+        }
+        try {
+            //真正的从数据库扣库存业务
+            TimeUnit.SECONDS.sleep(5);
+        }catch (Exception e){
+            //发生异常时退货库存
+            redisUtils.incr("product_" + productId);
+            System.out.println(e.getMessage());
+        }
+        return "秒杀成功";
     }
 }

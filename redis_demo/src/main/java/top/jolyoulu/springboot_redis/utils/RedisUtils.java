@@ -20,6 +20,44 @@ public class RedisUtils {
     private RedisTemplate redisTemplate;
 
     /**
+     * 原子性递减1
+     * @param key key
+     * @return
+     */
+    public long decr(String key){
+        return redisTemplate.opsForValue().decrement(key);
+    }
+
+    /**
+     * 原子性递增1
+     * @param key key
+     * @return
+     */
+    public long incr(String key){
+        return redisTemplate.opsForValue().increment(key);
+    }
+
+    /**
+     * 原子性递减
+     * @param key key
+     * @param num 步长
+     * @return
+     */
+    public long decr(String key,long num){
+        return redisTemplate.opsForValue().decrement(key,num);
+    }
+
+    /**
+     * 原子性递增
+     * @param key key
+     * @param num 步长
+     * @return
+     */
+    public long incr(String key,long num){
+        return redisTemplate.opsForValue().increment(key,num);
+    }
+
+    /**
      * 分布式锁，加锁
      * @param lock 锁ID
      * @param tag 锁标记，释放前与释放后需传入一致(防止被其它线程释放锁)
