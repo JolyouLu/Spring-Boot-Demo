@@ -20,7 +20,7 @@ public class RedisUtils {
     private RedisTemplate redisTemplate;
 
     /**
-     * 乐观锁
+     * 分布式锁，加锁
      * @param lock 锁ID
      * @param tag 锁标记，释放前与释放后需传入一致(防止被其它线程释放锁)
      * @param timeOut 锁有效时间
@@ -32,7 +32,7 @@ public class RedisUtils {
     }
 
     /**
-     * 释放锁
+     * 分布式锁，释放锁
      * @param lock 锁ID
      * @param tag 锁标记，释放前与释放后需传入一致(防止被其它线程释放锁)
      */
