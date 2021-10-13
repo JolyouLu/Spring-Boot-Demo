@@ -167,6 +167,29 @@ public class RedisUtils {
     }
 
     /**
+     * 分布式锁，加锁(spring-boot-starter-data-redis 2.x之前的早期版本不推荐使用)
+     * @param lock 锁ID
+     * @param tag 锁标记，释放前与释放后需传入一致(防止被其它线程释放锁)
+     * @param timeOut 锁有效时间(秒)
+     * @return true获取锁成功，false获取锁失败
+     */
+    @Deprecated
+    public boolean tryLock(String lock, String tag, int timeOut){
+        String script = "if (redis.call('GET',KEYS[1])) then\n" +
+                "    return 1\n" +
+                "else\n" +
+                "    redis.call('SET',KEYS[1],ARGV[1])\n" +
+                "    redis.call('EXPIRE',KEYS[1],ARGV[2])\n" +
+                "    return 0\n" +
+                "end";
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
+        redisScript.setScriptText(script);
+        redisScript.setResultType(Long.class);
+        Long res = (Long) redisTemplate.execute(redisScript, Arrays.asList(lock), tag,timeOut);
+        return res == 0;
+    }
+
+    /**
      * 分布式锁，释放锁
      * @param lock 锁ID
      * @param tag 锁标记，释放前与释放后需传入一致(防止被其它线程释放锁)
