@@ -23,6 +23,7 @@ public class TTLQueueConfig {
     //普通队列名称
     public static final String A_QUEUE = "QA";
     public static final String B_QUEUE = "QB";
+    public static final String C_QUEUE = "QC";
     //死信队列名称
     public static final String DEAD_LETTER_QUEUE = "QD";
 
@@ -66,6 +67,20 @@ public class TTLQueueConfig {
                 .build();
     }
 
+    //声明QC(普通队列)
+    @Bean("cQueue")
+    public Queue cQueue(){
+        Map<String,Object> arguments = new HashMap<>();
+        arguments.put("x-dead-letter-exchange",Y_DEAD_LETTER_EXCHANGE); //设置队列消息过期后转发到的死信交换机
+        arguments.put("x-dead-letter-routing-key","YD"); //设置RoutingKey
+        //arguments.put("x-message-ttl",40000); //设置队列TTL
+        //arguments.put("x-max-length",6); //设置队列最大容量
+        return QueueBuilder
+                .durable(C_QUEUE) //durable持久化、nonDurable不持久化
+                .withArguments(arguments)
+                .build();
+    }
+
     //声明QD(死信队列)
     @Bean("deadLetterQueue")
     public Queue deadLetterQueue(){
@@ -85,6 +100,12 @@ public class TTLQueueConfig {
     public Binding bQueueBindingX(@Qualifier("bQueue") Queue bQueue,
                                   @Qualifier("xExchange") DirectExchange xExchange){
         return BindingBuilder.bind(bQueue).to(xExchange).with("XB");
+    }
+
+    @Bean
+    public Binding cQueueBindingX(@Qualifier("cQueue") Queue cQueue,
+                                  @Qualifier("xExchange") DirectExchange xExchange){
+        return BindingBuilder.bind(cQueue).to(xExchange).with("XC");
     }
 
     @Bean
