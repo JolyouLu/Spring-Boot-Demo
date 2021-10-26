@@ -11,7 +11,7 @@ import java.util.Map;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class ApplicationContextUtils implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
- 
+
     public void setApplicationContext(ApplicationContext arg0)
             throws BeansException {
         applicationContext = arg0;
@@ -24,7 +24,7 @@ public class ApplicationContextUtils implements ApplicationContextAware {
     public static ApplicationContext getApplicationContext(){
         return applicationContext;
     }
-     
+
     /**
      * 根据bean的name来查找对象
      * @param name
@@ -33,7 +33,7 @@ public class ApplicationContextUtils implements ApplicationContextAware {
     public static Object getBeanByName(String name){
         return applicationContext.getBean(name);
     }
-     
+
     /**
      * 根据bean的class来查找对象
      * @param c
@@ -42,7 +42,7 @@ public class ApplicationContextUtils implements ApplicationContextAware {
     public static Object getBeanByClass(Class c){
         return applicationContext.getBean(c);
     }
-     
+
     /**
      * 根据bean的class来查找所有的对象(包括子类)
      * @param c
