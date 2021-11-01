@@ -1,0 +1,19 @@
+spring:
+  profiles:
+    # 使用dev切换到application-dev.yml配置
+    # 使用pro切换到application-pro.yml配置
+    active: dev
+
+person:
+  # 读取字符串
+  name: test
+  # 读取数字
+  age: 18
+  # 读取字符串
+  sex: 男
+  # 读取日期
+  birthDate: 1999/02/13
+  # 读取数组
+  arrays: [cat,dog,pig]
+  # 读取map
+  maps: {k1: v1,k2: v2}
