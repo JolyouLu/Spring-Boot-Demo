@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.jolyoulu.demo.Exceptions.MyException;
 
 /**
  * @Author: JolyouLu
@@ -20,5 +21,10 @@ public class TestController {
     @GetMapping("/person")
     public Person getPerson(){
         return person;
+    }
+
+    @GetMapping("/errHandler")
+    public void errHandler(){
+        throw new MyException("程序执行出错");
     }
 }
