@@ -53,6 +53,28 @@ public class RedisUtils {
     }
 
     /**
+     * 缓存基本的对象，若key不存在插入，若key存在不插入
+     * @param key 缓存的键
+     * @param value 缓存的值
+     * @return true key不存在插入成功 false 已经存在插入失败
+     */
+    public <T> boolean setIfAbsent(final String key,final T value){
+        return redisTemplate.opsForValue().setIfAbsent(key,value);
+    }
+
+    /**
+     * 缓存基本的对象，若key不存在插入，若key存在不插入
+     * @param key 缓存的键
+     * @param value 缓存的值
+     * @param timeOut 超时时长
+     * @param timeUnit 时间单位
+     * @return true key不存在插入成功 false 已经存在插入失败
+     */
+    public <T> boolean setIfAbsent(final String key,final T value,final long timeOut,TimeUnit timeUnit){
+        return redisTemplate.opsForValue().setIfAbsent(key,value,timeOut,timeUnit);
+    }
+
+    /**
      * 获取缓存基本的对象
      * @param key 缓存的键
      * @return 缓存的值

@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>top.jolyoulu</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>jdbc_druid_demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>jdbc_druid_demo</name>
     <description>Demo project for Spring Boot</description>
