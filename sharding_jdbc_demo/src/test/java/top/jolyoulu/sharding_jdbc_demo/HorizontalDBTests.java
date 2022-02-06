@@ -23,7 +23,7 @@ class HorizontalDBTests {
     void addCourse() {
         for (int i = 0; i < 100; i++) {
             Course course = new Course();
-            course.setCname("java"+i);
+            course.setCname("java" + i);
             //随机生成userId
             int userId = Math.abs(new Random().nextInt(100));
             course.setUserId(Long.valueOf(userId));
@@ -34,9 +34,9 @@ class HorizontalDBTests {
 
     //测试查询
     @Test
-    public void find(){
+    public void find() {
         QueryWrapper<Course> wrapper = new QueryWrapper<>();
-        wrapper.eq("cid",638753295996813313L);
+        wrapper.eq("cid", 638753295996813313L);
         System.out.println(courseMapper.selectOne(wrapper));
     }
 

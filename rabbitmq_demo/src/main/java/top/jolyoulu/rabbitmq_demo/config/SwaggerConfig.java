@@ -19,7 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 
     @Bean
-    public Docket webApiConfig(){
+    public Docket webApiConfig() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("webApi")
                 .apiInfo(webApiInfo())
@@ -27,12 +27,12 @@ public class SwaggerConfig {
                 .build();
     }
 
-    private ApiInfo webApiInfo(){
+    private ApiInfo webApiInfo() {
         return new ApiInfoBuilder()
                 .title("rabbitmq接口文档")
                 .description("本文档描述了rabbitmq服务接口定义")
                 .version("1.0")
-                .contact(new Contact("top.jolyoulu","","123456789@qq.com"))
+                .contact(new Contact("top.jolyoulu", "", "123456789@qq.com"))
                 .build();
     }
 }

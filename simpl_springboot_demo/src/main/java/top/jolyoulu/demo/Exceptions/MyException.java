@@ -5,7 +5,7 @@ package top.jolyoulu.demo.Exceptions;
  * @Date: 2021/11/2 14:35
  * @Version 1.0
  */
-public class MyException extends RuntimeException{
+public class MyException extends RuntimeException {
     private Integer code;
     private String msg;
 

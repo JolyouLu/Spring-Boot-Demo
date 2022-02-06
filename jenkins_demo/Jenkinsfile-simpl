@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+    stages {
+        stage('拉取源代码') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/${branch}']], extensions: [], userRemoteConfigs: [[credentialsId: '2f1f287b-0849-41bd-acb3-8db69bbc13ea', url: 'git@gitee.com:smallpage/jenkins-test01.git']]])
+            }
+        }
+        stage('代码审查') {
+            steps {
+                script {
+                    //引入sonar-scanner构建工具
+                    //对应在Jenkins中Global Tool Configuration，SonarQube Scanner中配置的Name
+                    scannerHome = tool 'sonar-scanner'
+                }
+                //引入sonarQube服务器环境
+                //对应在Jenkins中Configure System，SonarQube servers中配置的sonarQube
+                withSonarQubeEnv('sonarQube') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+        }
+        stage('编译构建项目') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('远程发布') {
+            steps {
+                deploy adapters: [tomcat8(credentialsId: '0e5df8cf-0d61-482f-9bc4-7a3580688e90', path: '', url: 'http://192.168.100.104:8080/')], contextPath: null, war: 'target/*.war'
+            }
+        }
+    }
+    //构建以后的行为
+    post {
+        always {
+            emailext body: '${FILE,path="email.html"}',subject: '构建通知：${ENV, var="JOB_NAME"}-第${BUILD_NUMBER}次构建日志',to: 'luzhoujin@fenzhidao.com,1139219074@qq.com'
+        }
+    }
+
+}

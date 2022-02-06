@@ -20,11 +20,11 @@ import java.util.Arrays;
 public class MySimpleByteSource implements ByteSource, Serializable {
     private static final long serialVersionUID = 5175082362119580768L;
 
-    private  byte[] bytes;
+    private byte[] bytes;
     private String cachedHex;
     private String cachedBase64;
 
-    public MySimpleByteSource(){
+    public MySimpleByteSource() {
     }
 
     public MySimpleByteSource(byte[] bytes) {
@@ -67,7 +67,7 @@ public class MySimpleByteSource implements ByteSource, Serializable {
 
     @Override
     public String toHex() {
-        if(this.cachedHex == null) {
+        if (this.cachedHex == null) {
             this.cachedHex = Hex.encodeToString(this.getBytes());
         }
         return this.cachedHex;
@@ -75,7 +75,7 @@ public class MySimpleByteSource implements ByteSource, Serializable {
 
     @Override
     public String toBase64() {
-        if(this.cachedBase64 == null) {
+        if (this.cachedBase64 == null) {
             this.cachedBase64 = Base64.encodeToString(this.getBytes());
         }
 
@@ -86,6 +86,7 @@ public class MySimpleByteSource implements ByteSource, Serializable {
     public boolean isEmpty() {
         return this.bytes == null || this.bytes.length == 0;
     }
+
     @Override
     public String toString() {
         return this.toBase64();
@@ -93,15 +94,15 @@ public class MySimpleByteSource implements ByteSource, Serializable {
 
     @Override
     public int hashCode() {
-        return this.bytes != null && this.bytes.length != 0? Arrays.hashCode(this.bytes):0;
+        return this.bytes != null && this.bytes.length != 0 ? Arrays.hashCode(this.bytes) : 0;
     }
 
     @Override
     public boolean equals(Object o) {
-        if(o == this) {
+        if (o == this) {
             return true;
-        } else if(o instanceof ByteSource) {
-            ByteSource bs = (ByteSource)o;
+        } else if (o instanceof ByteSource) {
+            ByteSource bs = (ByteSource) o;
             return Arrays.equals(this.getBytes(), bs.getBytes());
         } else {
             return false;

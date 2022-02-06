@@ -18,8 +18,8 @@ import javax.crypto.MacSpi;
 public class Consumer {
 
     @RabbitListener(queues = ConfirmConfig.CONFIRM_QUEUE_NAME)
-    public void receiverConfirmMessage(Message message){
-        log.info("接收到队列confirm.queue消息: {}",new String(message.getBody()));
+    public void receiverConfirmMessage(Message message) {
+        log.info("接收到队列confirm.queue消息: {}", new String(message.getBody()));
     }
 
 }

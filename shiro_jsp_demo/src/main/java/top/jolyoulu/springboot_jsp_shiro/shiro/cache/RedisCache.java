@@ -15,7 +15,7 @@ import java.util.Set;
  * @Version 1.0
  * //实现自定义缓存实现
  */
-public class RedisCache<K,V> implements Cache<K,V> {
+public class RedisCache<K, V> implements Cache<K, V> {
 
     private String cacheName;
 
@@ -27,24 +27,24 @@ public class RedisCache<K,V> implements Cache<K,V> {
     }
 
     //由于RedisCache不是由Spring托管的所有需要使用工具类获取bean工厂中对象
-    private RedisTemplate getRedisTemplate(){
+    private RedisTemplate getRedisTemplate() {
         return (RedisTemplate) ApplicationContextUtils.getBeanByName("redisTemplate");
     }
 
     @Override
     public V get(K k) throws CacheException {
-        return (V) getRedisTemplate().opsForHash().get(this.cacheName,k.toString());
+        return (V) getRedisTemplate().opsForHash().get(this.cacheName, k.toString());
     }
 
     @Override
     public V put(K k, V v) throws CacheException {
-        getRedisTemplate().opsForHash().put(this.cacheName,k.toString(), v);
+        getRedisTemplate().opsForHash().put(this.cacheName, k.toString(), v);
         return null;
     }
 
     @Override
     public V remove(K k) throws CacheException {
-        return (V) getRedisTemplate().opsForHash().delete(this.cacheName,k.toString());
+        return (V) getRedisTemplate().opsForHash().delete(this.cacheName, k.toString());
     }
 
     @Override

@@ -18,7 +18,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Document(indexName = "product",shards = 3,replicas = 1)
+@Document(indexName = "product", shards = 3, replicas = 1)
 public class Product {
     @Id
     private Long id;//商品唯一标识
@@ -28,6 +28,6 @@ public class Product {
     private String category;//分类名
     @Field(type = FieldType.Double)
     private Double price;//商品价格
-    @Field(type = FieldType.Keyword,index = false)
+    @Field(type = FieldType.Keyword, index = false)
     private String images;//图片地址
 }

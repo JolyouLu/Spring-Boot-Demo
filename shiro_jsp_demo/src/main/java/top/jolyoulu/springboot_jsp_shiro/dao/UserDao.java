@@ -17,12 +17,14 @@ import java.util.List;
 public interface UserDao {
     /**
      * 保存用户信息
+     *
      * @param user
      */
     void save(User user);
 
     /**
      * 查询用户信息
+     *
      * @param username
      * @return
      */
@@ -30,6 +32,7 @@ public interface UserDao {
 
     /**
      * 查询用户角色列表
+     *
      * @param username
      * @return
      */
@@ -37,6 +40,7 @@ public interface UserDao {
 
     /**
      * 查询权限列表
+     *
      * @param roleId
      * @return
      */

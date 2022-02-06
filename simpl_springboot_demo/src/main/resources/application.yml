@@ -14,6 +14,6 @@ person:
   # 读取日期
   birthDate: 1999/02/13
   # 读取数组
-  arrays: [cat,dog,pig]
+  arrays: [ cat,dog,pig ]
   # 读取map
-  maps: {k1: v1,k2: v2}
+  maps: { k1: v1,k2: v2 }

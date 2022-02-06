@@ -25,17 +25,17 @@ public class ShiroConfig {
 
     //创建ShiroFilter
     @Bean("shiroFilterFactoryBean")
-    public ShiroFilterFactoryBean getShiroFilterFactoryBean(){
+    public ShiroFilterFactoryBean getShiroFilterFactoryBean() {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         //给Filter设置安全管理器
         shiroFilterFactoryBean.setSecurityManager(this.getDefaultSecurityManager());
         //配置系统受限资源 与 公共资源
-        Map<String,String> map = new HashMap<>();
-        map.put("/user/getImage","anon"); //anon 公共资源
-        map.put("/user/login","anon"); //anon 公共资源
-        map.put("/user/register","anon"); //anon 公共资源
-        map.put("/register.jsp","anon"); //anon 公共资源
-        map.put("/**","authc"); //authc 请求这个资源需要认证和授权
+        Map<String, String> map = new HashMap<>();
+        map.put("/user/getImage", "anon"); //anon 公共资源
+        map.put("/user/login", "anon"); //anon 公共资源
+        map.put("/user/register", "anon"); //anon 公共资源
+        map.put("/register.jsp", "anon"); //anon 公共资源
+        map.put("/**", "authc"); //authc 请求这个资源需要认证和授权
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         //配置认证界面的路径
         shiroFilterFactoryBean.setLoginUrl("/login.jsp");
@@ -44,7 +44,7 @@ public class ShiroConfig {
 
     //创建安全管理器
     @Bean
-    public DefaultWebSecurityManager getDefaultSecurityManager(){
+    public DefaultWebSecurityManager getDefaultSecurityManager() {
         DefaultWebSecurityManager defaultSecurityManager = new DefaultWebSecurityManager();
         defaultSecurityManager.setRealm(this.getRealm());
         return defaultSecurityManager;
@@ -52,7 +52,7 @@ public class ShiroConfig {
 
     //创建自定义realm
     @Bean
-    public Realm getRealm(){
+    public Realm getRealm() {
         CustomerRealm customerRealm = new CustomerRealm();
         //修改凭证匹配器对加密后代码密码匹配 MD5+盐+hash
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();

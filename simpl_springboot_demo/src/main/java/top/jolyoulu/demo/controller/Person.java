@@ -18,7 +18,7 @@ public class Person {
     private String sex;
     private Date birthDate;
     private List<String> arrays;
-    private Map<String,String> maps;
+    private Map<String, String> maps;
 
     public String getName() {
         return name;

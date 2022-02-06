@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 public class DelayedQueueConsumer {
 
     @RabbitListener(queues = DelayedQueueConfig.DELAYED_QUEUE)
-    public void receiveD(Message message, Channel channel) throws Exception{
+    public void receiveD(Message message, Channel channel) throws Exception {
         String msg = new String(message.getBody());
-        log.info("当前时间: {},收到延迟消息: {}", LocalDateTime.now().toString(),msg);
+        log.info("当前时间: {},收到延迟消息: {}", LocalDateTime.now().toString(), msg);
     }
 }

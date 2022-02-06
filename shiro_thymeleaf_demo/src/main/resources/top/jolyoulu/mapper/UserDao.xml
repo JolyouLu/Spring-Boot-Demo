@@ -20,18 +20,19 @@
     <select id="findRolesByUserName" resultMap="userMap">
         SELECT u.id AS u_id,u.username AS u_username,r.name AS r_name,r.id AS r_id
         FROM users u
-                 LEFT JOIN users_roles ur ON u.id = ur.users_id
-                 LEFT JOIN roles r ON r.id = ur.id
+        LEFT JOIN users_roles ur ON u.id = ur.users_id
+        LEFT JOIN roles r ON r.id = ur.id
         WHERE u.username = #{username}
     </select>
 
-    <select id="findPermsByRolesId" parameterType="String" resultType="top.jolyoulu.springboot_thymeleaf_shiro.entity.Pers">
+    <select id="findPermsByRolesId" parameterType="String"
+            resultType="top.jolyoulu.springboot_thymeleaf_shiro.entity.Pers">
         SELECT p.id AS id,p.name AS name
         FROM roles r
-                 LEFT JOIN roles_pers rp ON r.id = rp.roles_id
-                 LEFT JOIN pers p ON rp.pers_id = p.id
+        LEFT JOIN roles_pers rp ON r.id = rp.roles_id
+        LEFT JOIN pers p ON rp.pers_id = p.id
         WHERE r.id = #{roleId}
-          AND rp.id IS NOT NULL
+        AND rp.id IS NOT NULL
     </select>
 
 </mapper>

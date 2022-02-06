@@ -31,9 +31,9 @@ class PublicTableTests {
 
     //测试删除
     @Test
-    public void delete(){
+    public void delete() {
         QueryWrapper<Udict> wrapper = new QueryWrapper<>();
-        wrapper.eq("dict_id",638783223932911617L);
+        wrapper.eq("dict_id", 638783223932911617L);
         udictMapper.delete(wrapper);
     }
 

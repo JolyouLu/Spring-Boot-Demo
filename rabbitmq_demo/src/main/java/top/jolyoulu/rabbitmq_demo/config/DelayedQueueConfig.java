@@ -24,9 +24,9 @@ public class DelayedQueueConfig {
 
     //声明交换机(由于这是插件来的所以需要使用自定义交换机构建)
     @Bean
-    public CustomExchange delayedExchange(){
-        Map<String,Object> arguments = new HashMap<>();
-        arguments.put("x-delayed-type","direct"); //交换机为直接交换机
+    public CustomExchange delayedExchange() {
+        Map<String, Object> arguments = new HashMap<>();
+        arguments.put("x-delayed-type", "direct"); //交换机为直接交换机
 
         return new CustomExchange(DELAYED_EXCHANGE, //交换机名称
                 "x-delayed-message", //交换机类型
@@ -37,7 +37,7 @@ public class DelayedQueueConfig {
 
     //声明队列
     @Bean
-    public Queue delayedQueue(){
+    public Queue delayedQueue() {
         return QueueBuilder
                 .durable(DELAYED_QUEUE) //durable持久化、nonDurable不持久化
                 .build();
@@ -46,7 +46,7 @@ public class DelayedQueueConfig {
     //交换机绑定队列
     @Bean
     public Binding delayedQueueBindingDelayedExchange(@Qualifier("delayedQueue") Queue delayedQueue,
-                                                      @Qualifier("delayedExchange") CustomExchange delayedExchange){
+                                                      @Qualifier("delayedExchange") CustomExchange delayedExchange) {
         return BindingBuilder.bind(delayedQueue).to(delayedExchange).with(DELAYED_ROUTING_KEY).noargs();
     }
 }

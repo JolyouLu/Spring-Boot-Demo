@@ -33,7 +33,7 @@ public class RWProxyTests {
 
     //测试修改
     @Test
-    public void find(){
+    public void find() {
         System.out.println(userMapper.selectList(new QueryWrapper<>()));
     }
 

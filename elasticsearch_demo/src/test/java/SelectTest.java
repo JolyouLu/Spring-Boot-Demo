@@ -24,7 +24,7 @@ public class SelectTest {
 
     //条件查询
     @Test
-    public void temQuery(){
+    public void temQuery() {
         TermQueryBuilder termQuery = QueryBuilders.termQuery("category", "手机");
         Iterable<Product> products = productDao.search(termQuery);
         for (Product product : products) {
@@ -34,14 +34,14 @@ public class SelectTest {
 
     //条件分页查询
     @Test
-    public void temQueryPage(){
+    public void temQueryPage() {
         int current = 0;
         int size = 5;
         //设置分页查询
         PageRequest pageRequest = PageRequest.of(current, size);
 
         TermQueryBuilder termQuery = QueryBuilders.termQuery("category", "手机");
-        Iterable<Product> products = productDao.search(termQuery,pageRequest);
+        Iterable<Product> products = productDao.search(termQuery, pageRequest);
         for (Product product : products) {
             System.out.println(product);
         }

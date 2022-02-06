@@ -5,26 +5,26 @@
     <title>主页</title>
 </head>
 <body>
-    <h1>我的门户</h1>
-    <a th:href="@{/user/logout}">退出登录</a>
+<h1>我的门户</h1>
+<a th:href="@{/user/logout}">退出登录</a>
+<ul>
+    <p shiro:hasRole="admin">
+    <li><a href="">用户管理</a></li>
     <ul>
-        <p shiro:hasRole="admin">
-            <li><a href="">用户管理</a></li>
-            <ul>
-                <p shiro:hasPermission="user:add:*">
-                    <li><a th:href="@{/user/add/}">新增用户</a></li>
-                </p>
-                <p shiro:hasPermission="user:update:*">
-                    <li><a th:href="@{/user/update}">修改用户</a></li>
-                </p>
-                <p shiro:hasPermission="user:delete:*">
-                    <li><a href="">删除用户</a></li>
-                </p>
-            </ul>
+        <p shiro:hasPermission="user:add:*">
+        <li><a th:href="@{/user/add/}">新增用户</a></li>
         </p>
-        <li><a href="">商品管理</a></li>
-        <li><a href="">订单管理</a></li>
-        <li><a href="">物流管理</a></li>
+        <p shiro:hasPermission="user:update:*">
+        <li><a th:href="@{/user/update}">修改用户</a></li>
+        </p>
+        <p shiro:hasPermission="user:delete:*">
+        <li><a href="">删除用户</a></li>
+        </p>
     </ul>
+    </p>
+    <li><a href="">商品管理</a></li>
+    <li><a href="">订单管理</a></li>
+    <li><a href="">物流管理</a></li>
+</ul>
 </body>
 </html>

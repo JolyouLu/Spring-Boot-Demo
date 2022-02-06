@@ -36,12 +36,12 @@ public class CustomerRealm extends AuthorizingRealm {
         User rolesByUserName = userService.findRolesByUserName(primaryPrincipal);
         //根据主身份信息获取角色与权限信息
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        if (!rolesByUserName.getRoleList().isEmpty()){
+        if (!rolesByUserName.getRoleList().isEmpty()) {
             rolesByUserName.getRoleList().forEach(role -> {
                 simpleAuthorizationInfo.addRole(role.getName());
                 //通过角色id获取权限信息
                 List<Pers> permsByRolesId = userService.findPermsByRolesId(role.getId());
-                if (!permsByRolesId.isEmpty()){
+                if (!permsByRolesId.isEmpty()) {
                     permsByRolesId.forEach(pers -> {
                         simpleAuthorizationInfo.addStringPermission(pers.getName());
                     });
@@ -58,7 +58,7 @@ public class CustomerRealm extends AuthorizingRealm {
         String principal = (String) token.getPrincipal();
         //根据用户身份信息去数据库查询用户密码与盐
         User user = userService.findByUserName(principal);
-        if (user != null){
+        if (user != null) {
             //封装到SimpleAuthenticationInfo返回
             return new SimpleAuthenticationInfo(
                     principal,

@@ -19,10 +19,10 @@ public class MyExceptionHandler {
 
     @ExceptionHandler(value = MyException.class)
     @ResponseBody
-    public Map<String,Object> dealException(MyException e, HttpServletRequest request){
-        Map<String,Object> retInfo = new HashMap<>();
-        retInfo.put("code",e.getCode());
-        retInfo.put("msg",e.getMsg());
+    public Map<String, Object> dealException(MyException e, HttpServletRequest request) {
+        Map<String, Object> retInfo = new HashMap<>();
+        retInfo.put("code", e.getCode());
+        retInfo.put("msg", e.getMsg());
         return retInfo;
     }
 

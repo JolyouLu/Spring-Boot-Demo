@@ -1,0 +1,63 @@
+pipeline {
+    agent any
+    environment {
+        IMAGE     = 'demo'
+        IMAGE_VERSION     = '1.6'
+        SSH_HOST ='ssh -t -p 22 root@47.96.235.23'
+    }
+    stages {
+        stage('拉取源代码') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/${branch}']], extensions: [], userRemoteConfigs: [[credentialsId: '2f1f287b-0849-41bd-acb3-8db69bbc13ea', url: 'git@gitee.com:smallpage/jenkins-test01.git']]])
+            }
+        }
+        stage('编译构建项目') {
+            steps {
+                sh 'echo ‘编译项目...’'
+                sh 'mvn clean package dockerfile:build'
+            }
+        }
+        stage('登录远程镜像仓库') {
+            steps {
+                sh 'echo ‘登录...’'
+                withCredentials([usernamePassword(credentialsId: '49a24aaf-2115-4778-a83e-fa549a0b1034', passwordVariable: 'password', usernameVariable: 'username')]) {
+                    sh 'docker login --username=${username} --password=${password} registry.cn-beijing.aliyuncs.com'
+                }
+            }
+        }
+        stage('推送到镜像仓库') {
+            steps {
+                sh 'echo ‘添加镜像...’'
+                sh 'docker tag $(docker images | grep ${IMAGE} | awk \'{print $3}\') registry.cn-beijing.aliyuncs.com/jolyoulu-public-repository/jenkins_test:${IMAGE_VERSION}'
+                sh 'echo ‘推送镜像...’'
+                sh 'docker push registry.cn-beijing.aliyuncs.com/jolyoulu-public-repository/jenkins_test:${IMAGE_VERSION}'
+                sh 'echo ‘删除镜像...’'
+                sh 'docker rmi registry.cn-beijing.aliyuncs.com/jolyoulu-public-repository/jenkins_test:${IMAGE_VERSION}'
+                sh 'docker rmi ${IMAGE}'
+            }
+        }
+        stage('控制远程服务器完成发布') {
+            steps {
+                sh 'echo ‘登录...’'
+                withCredentials([usernamePassword(credentialsId: '49a24aaf-2115-4778-a83e-fa549a0b1034', passwordVariable: 'password', usernameVariable: 'username')]) {
+                    sh '${SSH_HOST} docker login --username=${username} --password=${password} registry.cn-beijing.aliyuncs.com'
+                }
+                sh 'echo ‘拉取镜像...’'
+                sh '${SSH_HOST} docker pull registry.cn-beijing.aliyuncs.com/jolyoulu-public-repository/jenkins_test:${IMAGE_VERSION}'
+                sh 'echo ‘删除旧容器...’'
+                catchError(message: '') {
+                    sh '${SSH_HOST} docker rm -f ${IMAGE}'
+                }
+                sh 'echo ‘启动容器...’'
+                sh '${SSH_HOST} docker run -d -p 8001:8001  --name ${IMAGE} registry.cn-beijing.aliyuncs.com/jolyoulu-public-repository/jenkins_test:${IMAGE_VERSION}'
+            }
+        }
+    }
+    //构建以后的行为
+    post {
+        always {
+            emailext body: '${FILE,path="email.html"}',subject: '构建通知：${ENV, var="JOB_NAME"}-第${BUILD_NUMBER}次构建日志',to: 'luzhoujin@fenzhidao.com,1139219074@qq.com'
+        }
+    }
+
+}

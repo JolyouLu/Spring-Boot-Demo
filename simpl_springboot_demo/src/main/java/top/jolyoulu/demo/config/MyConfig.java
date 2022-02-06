@@ -25,19 +25,21 @@ public class MyConfig extends WebMvcConfigurerAdapter {
 
     /**
      * 注册一个拦截器
+     *
      * @param registry
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(myInterceptors).addPathPatterns("/**").excludePathPatterns("/index.html","/");
+        registry.addInterceptor(myInterceptors).addPathPatterns("/**").excludePathPatterns("/index.html", "/");
     }
 
     /**
      * 注册一个过滤
+     *
      * @return
      */
     @Bean
-    public FilterRegistrationBean myFilter(){
+    public FilterRegistrationBean myFilter() {
         FilterRegistrationBean<Filter> filterFilterRegistrationBean = new FilterRegistrationBean<>();
         //添加过滤器
         filterFilterRegistrationBean.setFilter(new MyFilter());

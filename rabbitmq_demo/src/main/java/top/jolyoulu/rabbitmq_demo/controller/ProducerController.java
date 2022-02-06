@@ -25,11 +25,11 @@ public class ProducerController {
 
     //发消息
     @GetMapping("/sendMessage/{message}")
-    public void sendMessage(@PathVariable("message") String message){
+    public void sendMessage(@PathVariable("message") String message) {
         CorrelationData correlationData = new CorrelationData("1");
         rabbitTemplate.convertAndSend(ConfirmConfig.CONFIRM_EXCHANGE_NAME,
-                "adfsf",message,correlationData);
-        log.info("发送消息内容: {}",message);
+                "adfsf", message, correlationData);
+        log.info("发送消息内容: {}", message);
     }
 
 }

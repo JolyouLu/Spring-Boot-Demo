@@ -10,5 +10,5 @@ import top.jolyoulu.entity.Product;
  * @Version 1.0
  */
 @Repository
-public interface ProductDao extends ElasticsearchRepository<Product,Long> {
+public interface ProductDao extends ElasticsearchRepository<Product, Long> {
 }

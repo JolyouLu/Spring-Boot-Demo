@@ -27,7 +27,7 @@ public class IndexTest {
     }
 
     @Test
-    public void deleteIndex(){
-        System.out.println("删除索引"+esTemplate.deleteIndex(Product.class));
+    public void deleteIndex() {
+        System.out.println("删除索引" + esTemplate.deleteIndex(Product.class));
     }
 }

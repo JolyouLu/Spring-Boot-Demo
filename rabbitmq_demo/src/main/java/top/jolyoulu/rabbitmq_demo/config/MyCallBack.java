@@ -17,14 +17,14 @@ import javax.annotation.PostConstruct;
  */
 @Slf4j
 @Component
-public class MyCallBack implements RabbitTemplate.ConfirmCallback,RabbitTemplate.ReturnCallback {
+public class MyCallBack implements RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnCallback {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
     //MyCallBack实例化后立刻执行的方法
     @PostConstruct
-    public void init(){
+    public void init() {
         //将该实现类注入到RabbitTemplate中
         rabbitTemplate.setConfirmCallback(this);
         rabbitTemplate.setReturnCallback(this);
@@ -37,10 +37,10 @@ public class MyCallBack implements RabbitTemplate.ConfirmCallback,RabbitTemplate
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         String id = correlationData != null ? correlationData.getId() : "";
-        if (ack){
-            log.info("交换机接收收消息成功，ID: {}",id);
-        }else {
-            log.error("交换机接收收消息失败，ID: {}，原因: {}",id,cause);
+        if (ack) {
+            log.info("交换机接收收消息成功，ID: {}", id);
+        } else {
+            log.error("交换机接收收消息失败，ID: {}，原因: {}", id, cause);
         }
     }
 
@@ -48,6 +48,6 @@ public class MyCallBack implements RabbitTemplate.ConfirmCallback,RabbitTemplate
     @Override
     public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
         log.error("消息: {}，被交换机 {} 回退，退回原因: {}，路由Key: {}",
-                new String(message.getBody()),exchange,replyText,routingKey);
+                new String(message.getBody()), exchange, replyText, routingKey);
     }
 }

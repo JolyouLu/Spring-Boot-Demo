@@ -11,10 +11,11 @@ public class SaltUtils {
 
     /**
      * 生成随机盐
+     *
      * @param n
      * @return
      */
-    public static String getSalt(int n){
+    public static String getSalt(int n) {
         char[] chars = "ABCDEFGHIJKLMNOPQRETUVWHYZabcdefghijklmnopqretuvwhyz0123456789!@#$%^&*()".toCharArray();
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < n; i++) {

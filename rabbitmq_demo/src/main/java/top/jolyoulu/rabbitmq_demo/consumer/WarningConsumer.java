@@ -16,8 +16,8 @@ import top.jolyoulu.rabbitmq_demo.config.ConfirmConfig;
 public class WarningConsumer {
 
     @RabbitListener(queues = ConfirmConfig.WARNING_QUEUE_NAME)
-    public void receiverConfirmMessage(Message message){
-        log.error("接收到不可路由消息: {}",new String(message.getBody()));
+    public void receiverConfirmMessage(Message message) {
+        log.error("接收到不可路由消息: {}", new String(message.getBody()));
     }
 
 }

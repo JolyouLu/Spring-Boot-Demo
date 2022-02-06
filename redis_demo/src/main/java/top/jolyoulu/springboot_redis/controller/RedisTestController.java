@@ -31,28 +31,28 @@ public class RedisTestController {
 
     //分布式锁的实现方式1：set nx ex + uuid
     @GetMapping("/testLock1")
-    public void testLock1(){
+    public void testLock1() {
         //生成uuid
         String uuid = UUID.randomUUID().toString();
         //获取锁
         Boolean lock = redisTemplate.opsForValue().setIfAbsent("lock", uuid, 3, TimeUnit.SECONDS);
-        if (lock){
+        if (lock) {
             Object value = redisTemplate.opsForValue().get("num");
             //判断num为空return
-            if (value == null){
+            if (value == null) {
                 return;
             }
             //有值就转成int
             int num = Integer.parseInt(value + "");
             //把redis的num加1
-            redisTemplate.opsForValue().set("num",++num);
+            redisTemplate.opsForValue().set("num", ++num);
             //释放锁，del
             //比较判断uuid是否一致
             String lockUUID = (String) redisTemplate.opsForValue().get("lock");
-            if (lockUUID.equals(uuid)){
+            if (lockUUID.equals(uuid)) {
                 redisTemplate.delete("lock");
             }
-        }else {
+        } else {
             //获取锁失败后，每隔0.1秒再次获取
             try {
                 Thread.sleep(100);
@@ -65,32 +65,32 @@ public class RedisTestController {
 
     //分布式锁的实现方式2：lua脚本
     @GetMapping("/testLock2")
-    public void testLock2(){
+    public void testLock2() {
         //生成uuid
         String uuid = UUID.randomUUID().toString();
         //获取锁
         Boolean lock = redisTemplate.opsForValue().setIfAbsent("lock", uuid, 3, TimeUnit.SECONDS);
-        if (lock){
+        if (lock) {
             Object value = redisTemplate.opsForValue().get("num");
             //判断num为空return
-            if (value == null){
+            if (value == null) {
                 return;
             }
             //有值就转成int
             int num = Integer.parseInt(value + "");
             //把redis的num加1
-            redisTemplate.opsForValue().set("num",++num);
+            redisTemplate.opsForValue().set("num", ++num);
             //释放锁，使用lua脚本，原子性操作
             String script = "if redis.call('get', KEYS[1]) == ARGV[1] then " +
-                              "return redis.call('del', KEYS[1]) " +
-                            "else " +
-                              "return 0 " +
-                            "end";
+                    "return redis.call('del', KEYS[1]) " +
+                    "else " +
+                    "return 0 " +
+                    "end";
             DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
             redisScript.setScriptText(script);
             redisScript.setResultType(Long.class);
-            redisTemplate.execute(redisScript, Arrays.asList("lock"),uuid);
-        }else {
+            redisTemplate.execute(redisScript, Arrays.asList("lock"), uuid);
+        } else {
             //获取锁失败后，每隔0.1秒再次获取
             try {
                 Thread.sleep(100);
@@ -103,8 +103,8 @@ public class RedisTestController {
 
     //预先加载秒杀库存
     @PostConstruct
-    public void init(){
-        redisTemplate.opsForValue().set("product_123",100);
+    public void init() {
+        redisTemplate.opsForValue().set("product_123", 100);
     }
 
     //秒杀实例
@@ -113,14 +113,14 @@ public class RedisTestController {
     public String secKill(String productId) throws InterruptedException {
         //预扣库存
         long sock = redisUtils.decr("product_" + productId);
-        if (sock < 0){
+        if (sock < 0) {
             redisUtils.incr("product_" + productId);
             return "商品已经售完";
         }
         try {
             //真正的从数据库扣库存业务
             TimeUnit.SECONDS.sleep(5);
-        }catch (Exception e){
+        } catch (Exception e) {
             //发生异常时退货库存
             redisUtils.incr("product_" + productId);
             System.out.println(e.getMessage());

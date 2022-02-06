@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 public class DeadLetterQueueConsumer {
 
     @RabbitListener(queues = "QD")
-    public void receiveD(Message message, Channel channel) throws Exception{
+    public void receiveD(Message message, Channel channel) throws Exception {
         String msg = new String(message.getBody());
-        log.info("当前时间: {},收到死信队列的消息: {}", LocalDateTime.now().toString(),msg);
+        log.info("当前时间: {},收到死信队列的消息: {}", LocalDateTime.now().toString(), msg);
     }
 }

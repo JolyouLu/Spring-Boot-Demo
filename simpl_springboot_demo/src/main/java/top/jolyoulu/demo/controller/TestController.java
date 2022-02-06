@@ -19,12 +19,12 @@ public class TestController {
     private Person person;
 
     @GetMapping("/person")
-    public Person getPerson(){
+    public Person getPerson() {
         return person;
     }
 
     @GetMapping("/errHandler")
-    public void errHandler(){
+    public void errHandler() {
         throw new MyException("程序执行出错");
     }
 }

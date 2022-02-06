@@ -43,13 +43,13 @@ class VerticalDBTests {
 
     //测试查询
     @Test
-    public void find(){
+    public void find() {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.eq("user_id",638774471406125056L);
+        userQueryWrapper.eq("user_id", 638774471406125056L);
         System.out.println(userMapper.selectOne(userQueryWrapper));
 
         QueryWrapper<Order> orderQueryWrapper = new QueryWrapper<>();
-        orderQueryWrapper.eq("order_id",638774471200604161L);
+        orderQueryWrapper.eq("order_id", 638774471200604161L);
         System.out.println(orderMapper.selectOne(orderQueryWrapper));
     }
 

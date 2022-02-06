@@ -29,55 +29,55 @@ public class ConfirmConfig {
 
     //声明交换机
     @Bean
-    public DirectExchange confirmExchange(){
+    public DirectExchange confirmExchange() {
         return ExchangeBuilder.directExchange(CONFIRM_EXCHANGE_NAME)
                 .durable(true)
-                .withArgument("alternate-exchange",BACKUP_EXCHANGE_NAME) //指定备份交换机
+                .withArgument("alternate-exchange", BACKUP_EXCHANGE_NAME) //指定备份交换机
                 .build();
     }
 
     //声明队列
     @Bean
-    public Queue confirmQueue(){
+    public Queue confirmQueue() {
         return QueueBuilder.durable(CONFIRM_QUEUE_NAME).build();
     }
 
     //交换机绑定队列
     @Bean
     public Binding queueBindingExchange(@Qualifier("confirmQueue") Queue queue,
-                                        @Qualifier("confirmExchange") DirectExchange directExchange){
+                                        @Qualifier("confirmExchange") DirectExchange directExchange) {
         return BindingBuilder.bind(queue).to(directExchange).with(ROUTING_KEY);
     }
 
     //声明备份交换机
     @Bean
-    public FanoutExchange backupExchange(){
+    public FanoutExchange backupExchange() {
         return new FanoutExchange(BACKUP_EXCHANGE_NAME);
     }
 
     //声明备份队列
     @Bean
-    public Queue backupQueue(){
+    public Queue backupQueue() {
         return QueueBuilder.durable(BACKUP_QUEUE_NAME).build();
     }
 
     //声明报警队列
     @Bean
-    public Queue warningQueue(){
+    public Queue warningQueue() {
         return QueueBuilder.durable(WARNING_QUEUE_NAME).build();
     }
 
     //交换机绑定备份队列
     @Bean
     public Binding backupQueueBindingBackupExchange(@Qualifier("backupQueue") Queue queue,
-                                                    @Qualifier("backupExchange") FanoutExchange backupExchange){
+                                                    @Qualifier("backupExchange") FanoutExchange backupExchange) {
         return BindingBuilder.bind(queue).to(backupExchange);
     }
 
     //交换机绑定报警队列
     @Bean
     public Binding warningQueueBindingBackupExchange(@Qualifier("warningQueue") Queue queue,
-                                                     @Qualifier("backupExchange") FanoutExchange backupExchange){
+                                                     @Qualifier("backupExchange") FanoutExchange backupExchange) {
         return BindingBuilder.bind(queue).to(backupExchange);
     }
 }

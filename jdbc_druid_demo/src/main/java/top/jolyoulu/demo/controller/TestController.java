@@ -21,7 +21,7 @@ public class TestController {
 
     @GetMapping
     @ResponseBody
-    public Object test(){
+    public Object test() {
         return jdbcTemplate.queryForList("SELECT * FROM course_1");
     }
 }

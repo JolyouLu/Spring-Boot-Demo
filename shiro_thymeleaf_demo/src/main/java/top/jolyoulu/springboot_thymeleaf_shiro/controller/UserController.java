@@ -36,14 +36,15 @@ public class UserController {
      * 调整login页面
      */
     @RequestMapping("loginview")
-    public String loginview(){
+    public String loginview() {
         return "login";
     }
+
     /**
      * 调整register页面
      */
     @RequestMapping("registerview")
-    public String registerview(){
+    public String registerview() {
         return "register";
     }
 
@@ -51,24 +52,24 @@ public class UserController {
      * 身份认证接口
      */
     @RequestMapping("login")
-    public String login(String username,String password,String code,HttpSession session){
+    public String login(String username, String password, String code, HttpSession session) {
         //比较验证码
         String codes = (String) session.getAttribute("code");
         try {
-            if (!codes.equalsIgnoreCase(code)){
+            if (!codes.equalsIgnoreCase(code)) {
                 throw new RuntimeException("验证码错误!");
             }
             //获取主体对象
             Subject subject = SecurityUtils.getSubject();
             subject.login(new UsernamePasswordToken(username, password));
             return "redirect:/index";
-        }catch (UnknownAccountException e){
+        } catch (UnknownAccountException e) {
             e.printStackTrace();
             System.out.println("用户名错误！");
-        }catch (IncorrectCredentialsException e){
+        } catch (IncorrectCredentialsException e) {
             e.printStackTrace();
             System.out.println("密码错误！");
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             e.printStackTrace();
             System.out.println("验证码错误！");
         }
@@ -83,27 +84,27 @@ public class UserController {
         //生成验证码
         String code = VerifyCodeUtils.generateVerifyCode(4);
         //验证码保存带session中
-        session.setAttribute("code",code);
+        session.setAttribute("code", code);
         //保存验证码图片
         response.setContentType("image/png");
-        VerifyCodeUtils.outputImage(220,60,response.getOutputStream(),code);
+        VerifyCodeUtils.outputImage(220, 60, response.getOutputStream(), code);
     }
 
     /**
      * 用户注册
      */
     @RequestMapping("register")
-    public String register(User user){
+    public String register(User user) {
         try {
             userService.register(user);
             return "redirect:/user/loginview";
-        }catch (Exception e){
+        } catch (Exception e) {
             return "redirect:/user/registerview";
         }
     }
 
     @RequestMapping("logout")
-    public String logout(){
+    public String logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout(); //退出登录
         return "redirect:/user/loginview";
@@ -111,17 +112,17 @@ public class UserController {
 
     @RequestMapping("add")
     @ResponseBody
-    public Map<Object,Object> add(){
-        Map<Object,Object> map = new HashMap<>();
+    public Map<Object, Object> add() {
+        Map<Object, Object> map = new HashMap<>();
         //通过编码方式获取主体对象判断，主体对象是否拥有权限
         Subject subject = SecurityUtils.getSubject();
         //同理判断角色用 subject.hasRole("admin")
-        if (subject.isPermitted("user:add:*")){
-            map.put("code",200);
-            map.put("msg","用户信息新增成功");
-        }else {
-            map.put("code",403);
-            map.put("msg","用户权限不足");
+        if (subject.isPermitted("user:add:*")) {
+            map.put("code", 200);
+            map.put("msg", "用户信息新增成功");
+        } else {
+            map.put("code", 403);
+            map.put("msg", "用户权限不足");
         }
         return map;
     }
@@ -131,10 +132,10 @@ public class UserController {
     //通过注解方式判断权限
     //同理判断角色用 @RequiresRoles("admin")
     @RequiresPermissions("user:update:*")
-    public Map<Object,Object> update(){
-        Map<Object,Object> map = new HashMap<>();
-        map.put("code",200);
-        map.put("msg","用户信息修改成功");
+    public Map<Object, Object> update() {
+        Map<Object, Object> map = new HashMap<>();
+        map.put("code", 200);
+        map.put("msg", "用户信息修改成功");
         return map;
     }
 
