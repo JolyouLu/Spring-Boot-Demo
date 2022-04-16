@@ -22,4 +22,10 @@ public class TestController {
     public String update(){
         return "update";
     }
+
+    @PreAuthorize("hasAnyAuthority('delete')")
+    @GetMapping("/delete")
+    public String delete(){
+        return "delete";
+    }
 }
