@@ -43,13 +43,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         Claims claims = JwtUtils.parseToken(token);
         String userId = claims.get("userId").toString();
         //从redis获取用户信息
-        SysUser user = redisUtils.get(userId);
-        if (Objects.isNull(user)){
+        LoginUser loginUser = redisUtils.get(userId);
+        if (Objects.isNull(loginUser)){
             throw new RuntimeException("用户未登录");
         }
         //存入SecurityContextHolder
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                user,null,null
+                loginUser.getUser(),null,loginUser.getAuthorities()
         );//使用3个参数的构造函数，会触发super.setAuthenticated(true);表示已经认证过
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         //放行

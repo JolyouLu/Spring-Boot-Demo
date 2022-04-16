@@ -1,5 +1,6 @@
 package top.jolyoulu.security.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,5 +15,11 @@ public class TestController {
     @GetMapping("/test")
     public String test(){
         return "test";
+    }
+
+    @PreAuthorize("hasAnyAuthority('update')")
+    @GetMapping("/update")
+    public String update(){
+        return "update";
     }
 }

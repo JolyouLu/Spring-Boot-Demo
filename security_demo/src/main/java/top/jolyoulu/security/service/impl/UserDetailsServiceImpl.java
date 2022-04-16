@@ -11,7 +11,9 @@ import top.jolyoulu.security.entity.LoginUser;
 import top.jolyoulu.security.entity.SysUser;
 import top.jolyoulu.security.service.ISysUserService;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @Author: JolyouLu
@@ -35,7 +37,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             log.error("找不到用户{}",user);
             throw new RuntimeException("用户名或密码错误");
         }
-        //查询用户权限
-        return new LoginUser(user);
+        //查询用户权限，假数据正常情况应该去数据库获取
+        Set<String> permissions = new HashSet<>();
+        permissions.add("update");
+        return new LoginUser(user,permissions);
     }
 }

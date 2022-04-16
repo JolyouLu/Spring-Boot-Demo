@@ -50,7 +50,7 @@ public class LoginServiceImpl {
         claims.put("userId", userId);
         String jwt = JwtUtils.createToken(claims);
         //userid做key存入redis中,30分钟过期
-        redisUtils.set(userId,loginUser.getUser(),30, TimeUnit.MINUTES);
+        redisUtils.set(userId,loginUser,30, TimeUnit.MINUTES);
         return ResultInfo.valueOf(jwt);
     }
 
