@@ -49,7 +49,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         //存入SecurityContextHolder
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                loginUser.getUser(),null,loginUser.getAuthorities()
+                loginUser,null,loginUser.getAuthorities()
         );//使用3个参数的构造函数，会触发super.setAuthenticated(true);表示已经认证过
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         //放行

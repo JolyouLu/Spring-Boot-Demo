@@ -28,4 +28,11 @@ public class TestController {
     public String delete(){
         return "delete";
     }
+
+    //使用自定义的权限控制 @ex => SGExpressionRoot类
+    @PreAuthorize("@ex.hasAuthority('add')")
+    @GetMapping("/add")
+    public String add(){
+        return "add";
+    }
 }
