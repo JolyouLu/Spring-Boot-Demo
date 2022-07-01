@@ -25,7 +25,7 @@ public class MessageDecodeUtils {
      * @param message 返回掉线
      */
     public static <T> void decode(String msg, Message<T> message){
-        Class<T> Clazz = message.getTClass();
+        Class<T> Clazz = message.getClazz();
         //转json对象
         JSONObject jsonObject = JSONObject.parseObject(msg);
         //获取datajson数组

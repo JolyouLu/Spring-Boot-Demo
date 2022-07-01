@@ -13,7 +13,7 @@ import java.util.*;
 @Data
 @ToString
 public class Message<T> {
-    private Class<T> tClass;
+    private Class<T> Clazz;
     private List<T> data;
     private String database;
     private Long es;
@@ -28,8 +28,8 @@ public class Message<T> {
     private Long ts;
     private String type;
 
-    public Message(Class<T> tClass) {
-        this.tClass = tClass;
+    public Message(Class<T> Clazz) {
+        this.Clazz = Clazz;
     }
 
 

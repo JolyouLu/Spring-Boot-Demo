@@ -35,7 +35,7 @@ public abstract class AbstractMessageHandlerContextAdapter<T> {
         if (genericSuperclass instanceof ParameterizedType){
             ParameterizedType type = (ParameterizedType)this.getClass().getGenericSuperclass();
             Type[] types = type.getActualTypeArguments();
-            if (((Class) types[0]).isInstance(message)){
+            if (types[0] == message.getClazz()){
                 accept(nextHandlerContext,message);
                 return;
             }
