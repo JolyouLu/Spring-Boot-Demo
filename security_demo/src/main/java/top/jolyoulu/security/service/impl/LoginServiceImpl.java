@@ -38,7 +38,7 @@ public class LoginServiceImpl {
     public ResultInfo login(SysUser user) {
         //获取authenticationManager进行用户认证
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-        Authentication authenticate = authenticationManager.authenticate(authentication);//最终会调用UserDetailsServiceImpl
+        Authentication authenticate = authenticationManager.authenticate(authentication);//最终会调用UserDetailsServiceImpl,获取用户信息
         if (Objects.isNull(authenticate)){
             throw new RuntimeException("用户名或密码错误");
         }
