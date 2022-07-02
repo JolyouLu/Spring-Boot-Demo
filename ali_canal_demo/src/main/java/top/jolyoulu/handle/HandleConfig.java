@@ -19,12 +19,18 @@ public class HandleConfig {
 
     @Bean
     public void initPipeline(){
+        pipeline.addHandler(this.protocolDecodeHandler());
         pipeline.addHandler(this.testEntity2Handler());
     }
 
     @Bean
     public TestEntity2Handler testEntity2Handler(){
         return new TestEntity2Handler("testEntity2Handler");
+    }
+
+    @Bean
+    public ProtocolDecodeHandler protocolDecodeHandler(){
+        return new ProtocolDecodeHandler("protocolDecodeHandler");
     }
 
 }

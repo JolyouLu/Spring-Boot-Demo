@@ -10,8 +10,8 @@ public class HeadHandler extends AbstractMessageHandlerContextAdapter {
     }
 
     @Override
-    public void accept(AbstractMessageHandlerContextAdapter ctx,Object message) {
-        log.info("用户消息:{}",message.toString());
-        ctx.next(message);
+    public void accept(AbstractMessageHandlerContextAdapter ctx,Object msg) {
+        log.info("用户消息:{}", msg.toString());
+        ctx.next(msg);
     }
 }

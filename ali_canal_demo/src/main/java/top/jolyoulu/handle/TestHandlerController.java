@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.jolyoulu.pipline.defhandler.AbstractMessageHandlerContextAdapter;
 import top.jolyoulu.pipline.DefaultMessagePipeline;
-import top.jolyoulu.protocol.Message;
-import top.jolyoulu.protocol.ProtocolDecode;
 
 /**
  * @Author: JolyouLu
@@ -26,9 +24,8 @@ public class TestHandlerController {
     @GetMapping
     public void test() {
         try {
-            Message message = ProtocolDecode.decode(msg);
             AbstractMessageHandlerContextAdapter ctx = defaultMessagePipeline.getCtx();
-            ctx.accept(ctx,message);
+            ctx.accept(ctx,msg);
         } catch (Exception e) {
             e.printStackTrace();
         }

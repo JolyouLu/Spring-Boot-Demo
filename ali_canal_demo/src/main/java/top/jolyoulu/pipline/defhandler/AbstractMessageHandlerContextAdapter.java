@@ -24,12 +24,12 @@ public abstract class AbstractMessageHandlerContextAdapter {
         this.nextHandlerContext = nextHandlerContext;
     }
 
-    public void next(Object message){
-        nextHandlerContext.accept(nextHandlerContext,message);
+    public void next(Object msg){
+        nextHandlerContext.accept(nextHandlerContext, msg);
     }
 
 
     //处理Handler重新方法
-    public abstract void accept(AbstractMessageHandlerContextAdapter ctx,Object message);
+    public abstract void accept(AbstractMessageHandlerContextAdapter ctx,Object msg);
 
 }

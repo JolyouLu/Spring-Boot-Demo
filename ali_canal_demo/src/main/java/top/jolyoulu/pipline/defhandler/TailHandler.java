@@ -16,7 +16,7 @@ public class TailHandler extends AbstractMessageHandlerContextAdapter {
     }
 
     @Override
-    public void accept(AbstractMessageHandlerContextAdapter ctx,Object message) {
-        log.warn("未处理消息：{}",message.toString());
+    public void accept(AbstractMessageHandlerContextAdapter ctx,Object msg) {
+        log.warn("未处理消息：{}", msg.toString());
     }
 }
