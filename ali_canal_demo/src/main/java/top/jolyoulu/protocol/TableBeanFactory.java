@@ -53,8 +53,9 @@ public class TableBeanFactory {
                     Class<?> aClass = Class.forName(p + "." + className);
                     Table table = aClass.getAnnotation(Table.class);
                     String tableName = table.name();
-                    if (map.putIfAbsent(tableName,aClass) != null){
-                        log.error("{}类被重复装配",aClass);
+                    Class<?> old = map.putIfAbsent(tableName, aClass);
+                    if (old != null){
+                        log.error("{} 类被 {} 类覆盖",old,aClass);
                     }
                 }
             }
