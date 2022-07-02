@@ -42,7 +42,7 @@ public class ReflectUtils {
 
     /**
      * 给一个对象属性赋值
-     * @param Clazz 目标对象
+     * @param clazz 目标对象
      * @param targetObj 目标对象
      * @param targetField 目标对象属性
      * @param arg 参数
