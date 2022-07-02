@@ -24,19 +24,16 @@ public abstract class SimpleMessageHandlerContext<T> extends AbstractMessageHand
 
     @Override
     public void accept(AbstractMessageHandlerContextAdapter ctx, Object msg) {
-        Type genericSuperclass = this.getClass().getGenericSuperclass();
-        if (genericSuperclass instanceof ParameterizedType){
-            ParameterizedType type = (ParameterizedType)this.getClass().getGenericSuperclass();
-            Type[] types = type.getActualTypeArguments();
-            if (types[0] == paramType.getType()){
+        if (msg instanceof Message){
+            if (paramType.getType() == ((Message<?>) msg).getClazz()){
                 @SuppressWarnings("unchecked")
                 Message<T> message = (Message<T>) msg;
-                accept0(nextHandlerContext,message);
+                accept0(ctx,message);
                 return;
             }
         }
-        if (!Objects.isNull(nextHandlerContext)){
-            nextHandlerContext.next(msg);
+        if (!Objects.isNull(ctx.nextHandlerContext)){
+            ctx.next(msg);
         }
     }
 

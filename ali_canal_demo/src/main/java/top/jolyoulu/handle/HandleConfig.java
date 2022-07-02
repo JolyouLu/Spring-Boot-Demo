@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import top.jolyoulu.pipline.DefaultMessagePipeline;
-import top.jolyoulu.pipline.defhandler.TestEntity2Handler;
 
 /**
  * @Author: JolyouLu
@@ -20,12 +19,18 @@ public class HandleConfig {
     @Bean
     public void initPipeline(){
         pipeline.addHandler(this.protocolDecodeHandler());
+        pipeline.addHandler(this.testEntityHandler());
         pipeline.addHandler(this.testEntity2Handler());
     }
 
     @Bean
     public TestEntity2Handler testEntity2Handler(){
         return new TestEntity2Handler("testEntity2Handler");
+    }
+
+    @Bean
+    public TestEntityHandler testEntityHandler(){
+        return new TestEntityHandler("testEntityHandler");
     }
 
     @Bean

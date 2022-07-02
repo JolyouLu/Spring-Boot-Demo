@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * @Version 1.0
  */
 @Data
-@Table(name = "fzd_a")
+@Table(name = "fzd_a2")
 public class TestEntity2 {
     @TableField(name = "id")
     private String id;

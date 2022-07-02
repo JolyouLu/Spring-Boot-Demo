@@ -1,4 +1,4 @@
-package top.jolyoulu.handle;
+package top.jolyoulu.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +23,7 @@ public class TestHandlerController {
 
     @GetMapping
     public void test() {
-        try {
-            AbstractMessageHandlerContextAdapter ctx = defaultMessagePipeline.getCtx();
-            ctx.accept(ctx,msg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        AbstractMessageHandlerContextAdapter ctx = defaultMessagePipeline.getCtx();
+        ctx.accept(ctx,msg);
     }
 }
