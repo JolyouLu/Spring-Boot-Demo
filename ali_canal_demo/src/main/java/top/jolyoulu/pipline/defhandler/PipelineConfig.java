@@ -1,7 +1,10 @@
-package top.jolyoulu.pipline;
+package top.jolyoulu.pipline.defhandler;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import top.jolyoulu.pipline.DefaultMessagePipeline;
+import top.jolyoulu.pipline.defhandler.HeadHandler;
+import top.jolyoulu.pipline.defhandler.TailHandler;
 
 /**
  * @Author: JolyouLu
@@ -13,7 +16,7 @@ public class PipelineConfig {
 
     @Bean
     public DefaultMessagePipeline defaultRequestPipeline(){
-        DefaultMessagePipeline pipeline = new DefaultMessagePipeline(new HeadHandler("headHandle"));
+        DefaultMessagePipeline pipeline = new DefaultMessagePipeline();
         pipeline.addHandler(new TailHandler("tailHandle"));
         return pipeline;
     }

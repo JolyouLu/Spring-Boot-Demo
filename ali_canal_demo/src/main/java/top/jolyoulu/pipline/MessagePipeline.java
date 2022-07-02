@@ -1,5 +1,7 @@
 package top.jolyoulu.pipline;
 
+import top.jolyoulu.pipline.defhandler.AbstractMessageHandlerContextAdapter;
+
 /**
  * @Author: JolyouLu
  * @Date: 2022/7/2 1:14
@@ -7,6 +9,6 @@ package top.jolyoulu.pipline;
  */
 public interface MessagePipeline {
 
-    void addHandler(AbstractMessageHandlerContextAdapter<?> ctx);
+    void addHandler(AbstractMessageHandlerContextAdapter ctx);
 
 }

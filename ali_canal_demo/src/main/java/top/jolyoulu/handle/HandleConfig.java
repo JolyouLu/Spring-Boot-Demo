@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import top.jolyoulu.pipline.DefaultMessagePipeline;
-import top.jolyoulu.pipline.TestEntity2Handler;
+import top.jolyoulu.pipline.defhandler.TestEntity2Handler;
 
 /**
  * @Author: JolyouLu

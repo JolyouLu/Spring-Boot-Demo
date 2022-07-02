@@ -1,12 +1,14 @@
 package top.jolyoulu.utils;
 
+import top.jolyoulu.pipline.entity.ParamType;
+
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -46,14 +48,14 @@ public class ReflectUtils {
      * @param arg 参数
      * @param format 格式化规则
      */
-    public static <T,R> void setMethod(Class<?> Clazz,
+    public static <T,R> void setMethod(Class<?> clazz,
                                      Object targetObj,
                                      Field targetField,
                                      T arg,
                                      Function<T,R> format){
         try {
             targetField.setAccessible(true);
-            PropertyDescriptor pd = new PropertyDescriptor(targetField.getName(), Clazz);
+            PropertyDescriptor pd = new PropertyDescriptor(targetField.getName(), clazz);
             Method method = pd.getWriteMethod();
             //如果有转换格式化，就格式化
             if (!Objects.isNull(format)){
@@ -69,6 +71,33 @@ public class ReflectUtils {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 将当前类的泛型与父类类泛型匹配，匹配相同的返回
+     * @param thisObj 当前对象
+     * @param superClazz 父类clazz
+     * @return
+     */
+    public static Map<Class<?>, Map<String, Class<?>>> getParamType(Object thisObj,Class<?> superClazz){
+        HashMap<Class<?>, Map<String, Class<?>>> res = new HashMap<>();
+        Class<?> thisClazz = thisObj.getClass();
+        HashMap<String, Class<?>> map = new HashMap<>();
+        if (!Objects.isNull(thisClazz)){
+            res.put(thisClazz,map);
+        }
+        Type genericSuperType = thisClazz.getGenericSuperclass();
+        if (!(genericSuperType instanceof ParameterizedType)){ //如果里面没有泛型参数
+            return res;
+        }
+        //获取父类原始泛型
+        TypeVariable<? extends Class<?>>[] superType = superClazz.getTypeParameters();
+        //获取实现类泛型类型
+        Type[] actualTypeParams = ((ParameterizedType) genericSuperType).getActualTypeArguments();
+        for (int i = 0; i < superType.length; i++) { //将父类的
+            map.put(superType[i].getName(), (Class<?>) actualTypeParams[i]);
+        }
+        return res;
     }
 
 

@@ -1,12 +1,7 @@
 package top.jolyoulu.protocol;
 
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.stereotype.Component;
 import top.jolyoulu.AliCanalApplication;
-import top.jolyoulu.entity.TestEntity;
-import top.jolyoulu.pipline.AbstractMessageHandlerContextAdapter;
-import top.jolyoulu.protocol.Message;
-import top.jolyoulu.protocol.MessageDecodeUtils;
 
 /**
  * @Author: JolyouLu

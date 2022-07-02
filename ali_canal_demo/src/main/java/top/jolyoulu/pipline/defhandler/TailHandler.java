@@ -1,7 +1,6 @@
-package top.jolyoulu.pipline;
+package top.jolyoulu.pipline.defhandler;
 
 import lombok.extern.slf4j.Slf4j;
-import top.jolyoulu.protocol.Message;
 
 /**
  * @Author: JolyouLu
@@ -10,14 +9,14 @@ import top.jolyoulu.protocol.Message;
  */
 
 @Slf4j
-public class TailHandler extends AbstractMessageHandlerContextAdapter{
+public class TailHandler extends AbstractMessageHandlerContextAdapter {
 
     public TailHandler(String name) {
         super(name);
     }
 
     @Override
-    public void accept(AbstractMessageHandlerContextAdapter ctx,Message message) {
+    public void accept(AbstractMessageHandlerContextAdapter ctx,Object message) {
         log.warn("未处理消息：{}",message.toString());
     }
 }
