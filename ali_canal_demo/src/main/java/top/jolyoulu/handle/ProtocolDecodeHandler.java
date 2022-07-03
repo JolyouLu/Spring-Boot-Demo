@@ -41,6 +41,10 @@ public class ProtocolDecodeHandler extends AbstractMessageHandlerContextAdapter 
         Message message = null;
         String table = JSONObject.parseObject(str).getString("table");
         Class<?> clazz = tableBeanFactory.getClass(table);
+        if (Objects.isNull(clazz)){
+            log.warn("未找到table：{}，可解析的类",table);
+            ctx.next(msg);
+        }
         message = new Message(clazz);
         decode(str,message);
         log.warn("消息解析 => {}",message);
