@@ -5,8 +5,11 @@ import top.jolyoulu.pipline.entity.ParamType;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -147,6 +150,19 @@ public class ReflectUtils {
          */
         public static final Function<String, Float> STR_2_FLOAT = s -> {
             return Float.valueOf(s);
+        };
+
+        /**
+         * String转Float
+         */
+        public static final Function<String, Date> STR_2_DATE = s -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                return sdf.parse(s);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return null;
         };
     }
 }

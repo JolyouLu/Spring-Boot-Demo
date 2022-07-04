@@ -103,11 +103,28 @@ public class ProtocolDecodeHandler extends AbstractMessageHandlerContextAdapter 
                 Object arg = source.get(name);
                 if (!Objects.isNull(arg)){
                     Function format= null;
-                    if (field.getType().isAssignableFrom(LocalDateTime.class)){
-                        format = ReflectUtils.Format.STR_2_LOCALDATETIME;
-                    }
-                    if (field.getType().isAssignableFrom(Integer.class)){
-                        format = ReflectUtils.Format.STR_2_INT;
+                    switch (field.getType().getName()){
+                        case "java.time.LocalDateTime":
+                            format = ReflectUtils.Format.STR_2_LOCALDATETIME;
+                            break;
+                        case "java.util.Date":
+                            format = ReflectUtils.Format.STR_2_DATE;
+                            break;
+                        case "java.lang.Integer":
+                            format = ReflectUtils.Format.STR_2_INT;
+                            break;
+                        case "java.lang.Long":
+                            format = ReflectUtils.Format.STR_2_LONG;
+                            break;
+                        case "java.lang.Short":
+                            format = ReflectUtils.Format.STR_2_SHORT;
+                            break;
+                        case "java.lang.Double":
+                            format = ReflectUtils.Format.STR_2_DOUBLE;
+                            break;
+                        case "java.lang.Float":
+                            format = ReflectUtils.Format.STR_2_FLOAT;
+                            break;
                     }
                     ReflectUtils.setMethod(Clazz,targetObj,field,arg,format);
                 }
