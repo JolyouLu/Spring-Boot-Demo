@@ -54,6 +54,9 @@ public class ProtocolDecodeHandler extends AbstractMessageHandlerContextAdapter 
      */
     private static <T> void decode(String msg, Message<T> message){
         Class<T> clazz = message.getClazz();
+        if (Objects.isNull(clazz)){
+            return;
+        }
         //转json对象
         JSONObject jsonObject = JSONObject.parseObject(msg);
         //获取datajson数组
