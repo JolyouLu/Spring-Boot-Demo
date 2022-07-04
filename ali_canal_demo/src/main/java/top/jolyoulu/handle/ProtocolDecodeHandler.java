@@ -53,7 +53,7 @@ public class ProtocolDecodeHandler extends AbstractMessageHandlerContextAdapter 
      * @param message 返回掉线
      */
     private static <T> void decode(String msg, Message<T> message){
-        Class<T> Clazz = message.getClazz();
+        Class<T> clazz = message.getClazz();
         //转json对象
         JSONObject jsonObject = JSONObject.parseObject(msg);
         //获取datajson数组
@@ -61,7 +61,7 @@ public class ProtocolDecodeHandler extends AbstractMessageHandlerContextAdapter 
         ArrayList<T> datas = new ArrayList<>();
         for (int i = 0; i < dataList.size(); i++) {
             Map<String,Object> map = dataList.get(i);
-            T targetObj = setAllField(map, Clazz);
+            T targetObj = setAllField(map, clazz);
             datas.add(targetObj);
         }
         message.setData(datas);
@@ -74,7 +74,7 @@ public class ProtocolDecodeHandler extends AbstractMessageHandlerContextAdapter 
         ArrayList<T> olds = new ArrayList<>();
         for (int i = 0; i < oldList.size(); i++) {
             Map<String,Object> map = oldList.get(i);
-            T targetObj = setAllField(map, Clazz);
+            T targetObj = setAllField(map, clazz);
             olds.add(targetObj);
         }
         message.setOld(olds);
@@ -98,7 +98,7 @@ public class ProtocolDecodeHandler extends AbstractMessageHandlerContextAdapter 
                 if (!Objects.isNull(arg)){
                     Function format= null;
                     if (field.getType().isAssignableFrom(LocalDateTime.class)){
-                        format = ReflectUtils.Format.SIMP_STR_2_LOCALDATETIME;
+                        format = ReflectUtils.Format.STR_2_LOCALDATETIME;
                     }
                     if (field.getType().isAssignableFrom(Integer.class)){
                         format = ReflectUtils.Format.STR_2_INT;
