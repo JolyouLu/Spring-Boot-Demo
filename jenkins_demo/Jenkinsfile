@@ -45,7 +45,7 @@ pipeline {
                 sh 'echo ‘拉取镜像...’'
                 sh '${SSH_HOST} docker pull registry.cn-beijing.aliyuncs.com/jolyoulu-public-repository/jenkins_test:${IMAGE_VERSION}'
                 sh 'echo ‘删除旧容器...’'
-                catchError(message: '') {
+                catchError(messages: '') {
                     sh '${SSH_HOST} docker rm -f ${IMAGE}'
                 }
                 sh 'echo ‘启动容器...’'
