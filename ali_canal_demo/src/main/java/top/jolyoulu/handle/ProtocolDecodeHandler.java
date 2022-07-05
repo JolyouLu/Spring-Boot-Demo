@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import top.jolyoulu.AliCanalApplication;
 import top.jolyoulu.pipline.defhandler.AbstractMessageHandlerContextAdapter;
 import top.jolyoulu.protocol.Message;
-import top.jolyoulu.protocol.TableBeanFactory;
 import top.jolyoulu.protocol.TableField;
+import top.jolyoulu.protocol.TableRegistrarUtils;
 import top.jolyoulu.utils.ReflectUtils;
 
 import java.lang.reflect.Field;
@@ -27,8 +27,6 @@ import java.util.function.Function;
 @Slf4j
 public class ProtocolDecodeHandler extends AbstractMessageHandlerContextAdapter {
 
-    @Autowired
-    private TableBeanFactory tableBeanFactory;
 
     public ProtocolDecodeHandler(String name) {
         super(name);
@@ -40,7 +38,7 @@ public class ProtocolDecodeHandler extends AbstractMessageHandlerContextAdapter 
         String str = (String) msg;
         Message message = null;
         String table = JSONObject.parseObject(str).getString("table");
-        Class<?> clazz = tableBeanFactory.getClass(table);
+        Class<?> clazz = TableRegistrarUtils.getClass(table);
         if (Objects.isNull(clazz)){
             log.warn("未找到table：{}，可解析的类",table);
             ctx.next(msg);
