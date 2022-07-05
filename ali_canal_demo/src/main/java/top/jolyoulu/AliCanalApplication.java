@@ -2,7 +2,7 @@ package top.jolyoulu;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import top.jolyoulu.protocol.EnableTableScan;
+import top.jolyoulu.protocol.EnableMSGTableScan;
 
 /**
  * @Author: JolyouLu
@@ -10,7 +10,7 @@ import top.jolyoulu.protocol.EnableTableScan;
  * @Version 1.0
  */
 @SpringBootApplication
-@EnableTableScan
+@EnableMSGTableScan
 public class AliCanalApplication {
     public static void main(String[] args) {
         SpringApplication.run(AliCanalApplication.class, args);

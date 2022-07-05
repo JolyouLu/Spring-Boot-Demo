@@ -12,7 +12,7 @@ import java.util.*;
  */
 @Data
 @ToString
-public class Messages<T> {
+public class MSGBody<T> {
     private Class<T> Clazz;
     private List<T> data;
     private String database;
@@ -28,7 +28,7 @@ public class Messages<T> {
     private Long ts;
     private String type;
 
-    public Messages(Class<T> Clazz) {
+    public MSGBody(Class<T> Clazz) {
         this.Clazz = Clazz;
     }
 }

@@ -7,11 +7,11 @@ import java.lang.annotation.Target;
 
 /**
  * @Author: JolyouLu
- * @Date: 2022/7/1 21:58
+ * @Date: 2022/7/1 21:57
  * @Version 1.0
  */
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface TableField {
-    String name() default "";
+public @interface MSGTable {
+    String value() default "";
 }

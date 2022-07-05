@@ -12,8 +12,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-@Import(TableRegistrar.class)
-public @interface EnableTableScan {
+@Import(MSGTableRegistrar.class)
+public @interface EnableMSGTableScan {
 
     /** 需要扫描的包 bean存放目录*/
     String[] basePackages() default {};

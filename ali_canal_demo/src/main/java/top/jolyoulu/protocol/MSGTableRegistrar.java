@@ -2,9 +2,7 @@ package top.jolyoulu.protocol;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.*;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -16,13 +14,12 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
-public class TableRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {
+public class MSGTableRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {
 
     private ResourceLoader resourceLoader;
 
-    private static final Logger log = LoggerFactory.getLogger(TableRegistrar.class);
+    private static final Logger log = LoggerFactory.getLogger(MSGTableRegistrar.class);
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata metadata,
@@ -31,11 +28,11 @@ public class TableRegistrar implements ImportBeanDefinitionRegistrar, ResourceLo
         // 构建一个classPath扫描器
         ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
         scanner.setResourceLoader(this.resourceLoader);
-        AnnotationTypeFilter annotationTypeFilter = new AnnotationTypeFilter(Table.class);
+        AnnotationTypeFilter annotationTypeFilter = new AnnotationTypeFilter(MSGTable.class);
         scanner.addIncludeFilter(annotationTypeFilter);
         // 获取需要扫描的包路径
         List<String> basePackages = new ArrayList<>();
-        Map<String, Object> attributes = metadata.getAnnotationAttributes(EnableTableScan.class.getCanonicalName());
+        Map<String, Object> attributes = metadata.getAnnotationAttributes(EnableMSGTableScan.class.getCanonicalName());
         for (String pkg : (String[]) attributes.get("basePackages")) {
             if (StringUtils.hasText(pkg)) {
                 basePackages.add(pkg);
@@ -53,9 +50,9 @@ public class TableRegistrar implements ImportBeanDefinitionRegistrar, ResourceLo
                         // 注入数据
                         String className = bd.getBeanClassName();
                         Class<?> aClass = Class.forName(className);
-                        Table table = aClass.getAnnotation(Table.class);
-                        String tableName = table.name();
-                        Class<?> old = TableRegistrarUtils.putIfAbsent(tableName, aClass);
+                        MSGTable MSGTable = aClass.getAnnotation(MSGTable.class);
+                        String tableName = MSGTable.value();
+                        Class<?> old = MSGTableRegistrarUtils.putIfAbsent(tableName, aClass);
                         if (old != null) {
                             log.error("{} 类被 {} 类覆盖", old, aClass);
                         }

@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Date: 2022/7/5 21:44
  * @Version 1.0
  */
-public class TableRegistrarUtils {
+public class MSGTableRegistrarUtils {
 
     private static final Map<String, Class<?>> map = new ConcurrentHashMap<>();
 

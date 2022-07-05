@@ -1,7 +1,7 @@
 package top.jolyoulu.pipline.defhandler;
 
 import top.jolyoulu.pipline.entity.ParamType;
-import top.jolyoulu.protocol.Messages;
+import top.jolyoulu.protocol.MSGBody;
 
 import java.util.Objects;
 
@@ -20,11 +20,11 @@ public abstract class SimpleMessageHandlerContext<T> extends AbstractMessageHand
 
     @Override
     public void accept(AbstractMessageHandlerContextAdapter ctx, Object msg) {
-        if (msg instanceof Messages){
-            if (paramType.getType() == ((Messages<?>) msg).getClazz()){
+        if (msg instanceof MSGBody){
+            if (paramType.getType() == ((MSGBody<?>) msg).getClazz()){
                 @SuppressWarnings("unchecked")
-                Messages<T> messages = (Messages<T>) msg;
-                accept0(ctx, messages);
+                MSGBody<T> MSGBody = (MSGBody<T>) msg;
+                accept0(ctx, MSGBody);
                 return;
             }
         }
@@ -33,7 +33,7 @@ public abstract class SimpleMessageHandlerContext<T> extends AbstractMessageHand
         }
     }
 
-    public abstract void accept0(AbstractMessageHandlerContextAdapter ctx, Messages<T> msg);
+    public abstract void accept0(AbstractMessageHandlerContextAdapter ctx, MSGBody<T> msg);
 
     public ParamType getParamType() {
         return paramType;
