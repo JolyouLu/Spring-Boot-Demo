@@ -10,7 +10,7 @@ import top.jolyoulu.protocol.EnableTableScan;
  * @Version 1.0
  */
 @SpringBootApplication
-@EnableTableScan(basePackages = {"top.jolyoulu.entity"})
+@EnableTableScan
 public class AliCanalApplication {
     public static void main(String[] args) {
         SpringApplication.run(AliCanalApplication.class, args);

@@ -43,7 +43,7 @@ public class TableRegistrar implements ImportBeanDefinitionRegistrar, ResourceLo
         }
         // 添加当前项目包
         basePackages.add(ClassUtils.getPackageName(metadata.getClassName()));
-        log.info(Arrays.toString(basePackages.toArray()));
+        log.info("扫描包 => "+Arrays.toString(basePackages.toArray()));
         for (String basePackage : basePackages) {
             Set<BeanDefinition> candidateComponents = scanner.findCandidateComponents(basePackage);
             // 构建信息

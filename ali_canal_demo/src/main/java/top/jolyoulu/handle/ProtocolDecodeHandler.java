@@ -5,9 +5,7 @@ import com.alibaba.fastjson.TypeReference;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import top.jolyoulu.pipline.defhandler.AbstractMessageHandlerContextAdapter;
-import top.jolyoulu.protocol.Message;
 import top.jolyoulu.protocol.Messages;
-import top.jolyoulu.protocol.TableBeanFactory;
 import top.jolyoulu.protocol.TableField;
 import top.jolyoulu.protocol.TableRegistrarUtils;
 import top.jolyoulu.utils.ReflectUtils;
@@ -37,7 +35,7 @@ public class ProtocolDecodeHandler extends AbstractMessageHandlerContextAdapter 
     public void accept(AbstractMessageHandlerContextAdapter ctx, Object msg) {
         String str = (String) msg;
         String table = JSONObject.parseObject(str).getString("table");
-        Class<?> clazz = tableBeanFactory.getClass(table);
+        Class<?> clazz = TableRegistrarUtils.getClass(table);
         if (!Objects.isNull(clazz)){
             log.warn("解析消息 => {}",msg);
             Messages message = new Messages(clazz);
