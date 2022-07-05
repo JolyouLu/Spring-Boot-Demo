@@ -4,9 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import top.jolyoulu.AliCanalApplication;
 import top.jolyoulu.pipline.defhandler.AbstractMessageHandlerContextAdapter;
 import top.jolyoulu.protocol.Message;
+import top.jolyoulu.protocol.Messages;
+import top.jolyoulu.protocol.TableBeanFactory;
 import top.jolyoulu.protocol.TableField;
 import top.jolyoulu.protocol.TableRegistrarUtils;
 import top.jolyoulu.utils.ReflectUtils;
@@ -34,28 +35,31 @@ public class ProtocolDecodeHandler extends AbstractMessageHandlerContextAdapter 
 
     @Override
     public void accept(AbstractMessageHandlerContextAdapter ctx, Object msg) {
-        log.warn("收到消息 => {}",msg);
         String str = (String) msg;
-        Message message = null;
         String table = JSONObject.parseObject(str).getString("table");
-        Class<?> clazz = TableRegistrarUtils.getClass(table);
-        if (Objects.isNull(clazz)){
-            log.warn("未找到table：{}，可解析的类",table);
+        Class<?> clazz = tableBeanFactory.getClass(table);
+        if (!Objects.isNull(clazz)){
+            log.warn("解析消息 => {}",msg);
+            Messages message = new Messages(clazz);
+            decode(str,message);
+            log.warn("消息解析成功 => {}",message);
+            ctx.next(message);
+        }else {
+            log.warn("{} 消息未找到对应的类解析",table);
             ctx.next(msg);
         }
-        message = new Message(clazz);
-        decode(str,message);
-        log.warn("消息解析 => {}",message);
-        ctx.next(message);
     }
 
     /**
      * 解码消息
      * @param msg 消息内容
-     * @param message 返回掉线
+     * @param messages 返回掉线
      */
-    private static <T> void decode(String msg, Message<T> message){
-        Class<T> Clazz = message.getClazz();
+    private static <T> void decode(String msg, Messages<T> messages){
+        Class<T> clazz = messages.getClazz();
+        if (Objects.isNull(clazz)){
+            return;
+        }
         //转json对象
         JSONObject jsonObject = JSONObject.parseObject(msg);
         //获取datajson数组
@@ -63,29 +67,29 @@ public class ProtocolDecodeHandler extends AbstractMessageHandlerContextAdapter 
         ArrayList<T> datas = new ArrayList<>();
         for (int i = 0; i < dataList.size(); i++) {
             Map<String,Object> map = dataList.get(i);
-            T targetObj = setAllField(map, Clazz);
+            T targetObj = setAllField(map, clazz);
             datas.add(targetObj);
         }
-        message.setData(datas);
-        message.setDatabase(jsonObject.getString("database"));
-        message.setEs(jsonObject.getLong("es"));
-        message.setIsDdl(jsonObject.getBoolean("isDdl"));
-        message.setMysqlType(jsonObject.getObject("mysqlType", new TypeReference<Map<String,String>>(){}));
+        messages.setData(datas);
+        messages.setDatabase(jsonObject.getString("database"));
+        messages.setEs(jsonObject.getLong("es"));
+        messages.setIsDdl(jsonObject.getBoolean("isDdl"));
+        messages.setMysqlType(jsonObject.getObject("mysqlType", new TypeReference<Map<String,String>>(){}));
         //获取datajson数组
         List<Map<String,Object>> oldList= jsonObject.getObject("old", new TypeReference<List<Map<String,Object>>>(){});
         ArrayList<T> olds = new ArrayList<>();
         for (int i = 0; i < oldList.size(); i++) {
             Map<String,Object> map = oldList.get(i);
-            T targetObj = setAllField(map, Clazz);
+            T targetObj = setAllField(map, clazz);
             olds.add(targetObj);
         }
-        message.setOld(olds);
-        message.setPkNames(jsonObject.getObject("pkNames", new TypeReference<List<String>>(){}));
-        message.setSql(jsonObject.getString("sql"));
-        message.setSqlType(jsonObject.getObject("sqlType", new TypeReference<Map<String,String>>(){}));
-        message.setTable(jsonObject.getString("table"));
-        message.setTs(jsonObject.getLong("ts"));
-        message.setType(jsonObject.getString("type"));
+        messages.setOld(olds);
+        messages.setPkNames(jsonObject.getObject("pkNames", new TypeReference<List<String>>(){}));
+        messages.setSql(jsonObject.getString("sql"));
+        messages.setSqlType(jsonObject.getObject("sqlType", new TypeReference<Map<String,String>>(){}));
+        messages.setTable(jsonObject.getString("table"));
+        messages.setTs(jsonObject.getLong("ts"));
+        messages.setType(jsonObject.getString("type"));
     }
 
     //将对象中的所以参数都赋值
@@ -99,11 +103,28 @@ public class ProtocolDecodeHandler extends AbstractMessageHandlerContextAdapter 
                 Object arg = source.get(name);
                 if (!Objects.isNull(arg)){
                     Function format= null;
-                    if (field.getType().isAssignableFrom(LocalDateTime.class)){
-                        format = ReflectUtils.Format.SIMP_STR_2_LOCALDATETIME;
-                    }
-                    if (field.getType().isAssignableFrom(Integer.class)){
-                        format = ReflectUtils.Format.STR_2_INT;
+                    switch (field.getType().getName()){
+                        case "java.time.LocalDateTime":
+                            format = ReflectUtils.Format.STR_2_LOCALDATETIME;
+                            break;
+                        case "java.util.Date":
+                            format = ReflectUtils.Format.STR_2_DATE;
+                            break;
+                        case "java.lang.Integer":
+                            format = ReflectUtils.Format.STR_2_INT;
+                            break;
+                        case "java.lang.Long":
+                            format = ReflectUtils.Format.STR_2_LONG;
+                            break;
+                        case "java.lang.Short":
+                            format = ReflectUtils.Format.STR_2_SHORT;
+                            break;
+                        case "java.lang.Double":
+                            format = ReflectUtils.Format.STR_2_DOUBLE;
+                            break;
+                        case "java.lang.Float":
+                            format = ReflectUtils.Format.STR_2_FLOAT;
+                            break;
                     }
                     ReflectUtils.setMethod(Clazz,targetObj,field,arg,format);
                 }

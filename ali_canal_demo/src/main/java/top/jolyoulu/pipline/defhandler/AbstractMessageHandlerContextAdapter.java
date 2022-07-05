@@ -33,6 +33,7 @@ public abstract class AbstractMessageHandlerContextAdapter {
         }catch (Exception e){
             exception(nextHandlerContext, msg,e);
         }
+        return;
     }
 
 

@@ -5,8 +5,11 @@ import top.jolyoulu.pipline.entity.ParamType;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -104,9 +107,9 @@ public class ReflectUtils {
     public static class Format{
 
         /**
-         * 简单的String转LocalDateTime
+         * String转LocalDateTime
          */
-        public static final Function<String, LocalDateTime> SIMP_STR_2_LOCALDATETIME = s -> {
+        public static final Function<String, LocalDateTime> STR_2_LOCALDATETIME = s -> {
             if (s.equals("0000-00-00 00:00:00")){
                 return null;
             }
@@ -115,10 +118,51 @@ public class ReflectUtils {
         };
 
         /**
-         * 简单的String转Integer
+         * String转Integer
          */
         public static final Function<String, Integer> STR_2_INT = s -> {
             return Integer.valueOf(s);
+        };
+
+        /**
+         * String转Long
+         */
+        public static final Function<String, Long> STR_2_LONG = s -> {
+            return Long.valueOf(s);
+        };
+
+        /**
+         * String转Short
+         */
+        public static final Function<String, Short> STR_2_SHORT = s -> {
+            return Short.valueOf(s);
+        };
+
+        /**
+         * String转Double
+         */
+        public static final Function<String, Double> STR_2_DOUBLE = s -> {
+            return Double.valueOf(s);
+        };
+
+        /**
+         * String转Float
+         */
+        public static final Function<String, Float> STR_2_FLOAT = s -> {
+            return Float.valueOf(s);
+        };
+
+        /**
+         * String转Float
+         */
+        public static final Function<String, Date> STR_2_DATE = s -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                return sdf.parse(s);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return null;
         };
     }
 }

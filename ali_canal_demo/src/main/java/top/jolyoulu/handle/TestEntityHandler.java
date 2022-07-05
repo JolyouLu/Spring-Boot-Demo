@@ -1,14 +1,9 @@
 package top.jolyoulu.handle;
 
-import lombok.Data;
 import top.jolyoulu.entity.TestEntity;
 import top.jolyoulu.pipline.defhandler.AbstractMessageHandlerContextAdapter;
 import top.jolyoulu.pipline.defhandler.SimpleMessageHandlerContext;
-import top.jolyoulu.protocol.Message;
-import top.jolyoulu.protocol.Table;
-import top.jolyoulu.protocol.TableField;
-
-import java.time.LocalDateTime;
+import top.jolyoulu.protocol.Messages;
 
 /**
  * @Author: JolyouLu
@@ -22,7 +17,7 @@ public class TestEntityHandler extends SimpleMessageHandlerContext<TestEntity> {
     }
 
     @Override
-    public void accept0(AbstractMessageHandlerContextAdapter ctx, Message<TestEntity> msg) {
+    public void accept0(AbstractMessageHandlerContextAdapter ctx, Messages<TestEntity> msg) {
         System.out.println("TestEntity2Handler"+msg);
         ctx.next(msg);
     }

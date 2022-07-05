@@ -3,7 +3,7 @@ package top.jolyoulu.handle;
 import top.jolyoulu.entity.TestEntity2;
 import top.jolyoulu.pipline.defhandler.AbstractMessageHandlerContextAdapter;
 import top.jolyoulu.pipline.defhandler.SimpleMessageHandlerContext;
-import top.jolyoulu.protocol.Message;
+import top.jolyoulu.protocol.Messages;
 
 /**
  * @Author: JolyouLu
@@ -17,8 +17,8 @@ public class TestEntity2Handler extends SimpleMessageHandlerContext<TestEntity2>
     }
 
     @Override
-    public void accept0(AbstractMessageHandlerContextAdapter ctx, Message<TestEntity2> message) {
-        System.out.println("TestEntity2Handler"+message);
-        ctx.next(message);
+    public void accept0(AbstractMessageHandlerContextAdapter ctx, Messages<TestEntity2> messages) {
+        System.out.println("TestEntity2Handler"+ messages);
+        ctx.next(messages);
     }
 }
