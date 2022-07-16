@@ -3,6 +3,9 @@ package top.jolyoulu;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import top.jolyoulu.protocol.EnableMSGTableScan;
+import top.jolyoulu.protocol.TestConfig;
+
+import java.io.IOException;
 
 /**
  * @Author: JolyouLu
